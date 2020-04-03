@@ -26,7 +26,9 @@ Bag: [(x, n), ...]
 
 > del :: Eq a => a -> Bag a -> Bag a
 > del el [] = []
-> del el ((b1, 1):bs) = bs
+> del el ((b1, 1):bs) = if el == b1 
+>                        then bs
+>                        else (b1,1):(del el bs)
 > del el (b:bs) = if el == fst b 
 >                  then (el, snd b - 1):bs 
 >                  else b:(del el bs)
