@@ -99,17 +99,20 @@ e) Define a function isbag that computes the intersection (common elements) of t
 
 (a) Define the function nodes :: Graph -> [Node] that computes the list of nodes contained in a given graph. For example, nodes g = [1,2,3,4].
 
-Listcomp attempt:
---> nodes :: Graph -> [Node]
---> nodes g = norm concat [[fst a, snd a] | a <- g]
+List Comprehension:
 
 > nodes :: Graph -> [Node]
-> nodes [] = []
-> nodes (x:xs) = norm $ fst x : snd x : nodes xs
+> nodes g = norm $ concat [[fst a, snd a] | a <- g]
+
+Recursive:
+
+> --nodes :: Graph -> [Node]
+> --nodes [] = []
+> --nodes (x:xs) = norm $ fst x : snd x : nodes xs
 
 (b) Define the function suc :: Node -> Graph -> [Node] that computes the list of successors for a node in a given graph. For example, suc 2 g = [3,4], suc 4 g = [], and suc 4 h = [4].
 
->
+> --suc :: Node -> Graph -> [Node]
 
 (c) Define the function detach :: Node -> Graph -> Graph that removes a node together with all of its incident edges from a graph. For example, detach 3 g = [(1,2),(2,4)] and detach 2 h = [(1,3),(4,4)].
 
