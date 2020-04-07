@@ -1,6 +1,13 @@
-Homework 1
++==============+
+|| Homework 1 ||
++==============+
+
 CS 381 Spring 2020
-Jackson Golletz, Kendrea Beers, Lyell Read, Robert Detjens
+Kendrea Beers, Robert Detjens, Jackson Golletz, Lyell Read, Zach Rogers
+
++-------------+
+| Excercise 1 |
++-------------+
 
 > import Data.List (nub,sort)
 
@@ -12,10 +19,6 @@ Jackson Golletz, Kendrea Beers, Lyell Read, Robert Detjens
 Bag: [(x, n), ...]
   x: some element
   n: number of x's in the multiset
-
-+-------------+
-| Excercise 1 |
-+-------------+
 
 (a) Define the function ins that inserts an element into a multiset.
 
