@@ -36,13 +36,25 @@ Bag: [(x, n), ...]
 
 (c) Define a function bag that takes a list of values and produces a multiset representation.
 
- > bag :: Eq a => [a] -> Bag a
+> bag :: Eq a => [a] -> Bag a
+> bag (a:[]) = ins a []
+> bag (a:as) = ins a (bag as)
 
 
 (d) Define a function subbag that determines whether or not its first argument bag is contained in the second.
 
- > subbag :: Eq a => Bag a -> Bag a -> Bool
-
+> subbag :: Eq a => Bag a -> Bag a -> Bool
+> subbag [] _ = True
+> subbag _ [] = False
+> subbag (a:as) b = if subbag' a b then subbag as b else False
+>
+> -- helper function, checks only one element
+> subbag' :: Eq a => (a, Int) -> Bag a -> Bool
+> subbag' _ [] = False
+> subbag' (el, ec) (b:[]) = el == fst b && ec <= snd b
+> subbag' e@(el, ec) (b:bs) | el /= fst b = subbag' e bs
+>                           | ec <= snd b = True
+>                           | otherwise = False
 
 e) Define a function isbag that computes the intersection of two multisets.
 
