@@ -118,7 +118,7 @@ e) Define a function isbag that computes the intersection (common elements) of t
 > data Shape = Pt Point
 >   | Circle Point Length
 >   | Rect Point Length Length
-> deriving Show
+>   deriving Show
 > type Figure = [Shape]
 > type BBox = (Point,Point)
 
