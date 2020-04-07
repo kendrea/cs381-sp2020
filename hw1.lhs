@@ -13,12 +13,16 @@ Bag: [(x, n), ...]
   x: some element
   n: number of x's in the multiset
 
++-------------+
+| Excercise 1 |
++-------------+
+
 (a) Define the function ins that inserts an element into a multiset.
 
 > ins :: Eq a => a -> Bag a -> Bag a
 > ins new [] = [(new,1)]
-> ins new (b:bs) = if new == fst b 
->                  then (new, snd b + 1):bs 
+> ins new (b:bs) = if new == fst b
+>                  then (new, snd b + 1):bs
 >                  else b:(ins new bs)
 
 
@@ -26,11 +30,11 @@ Bag: [(x, n), ...]
 
 > del :: Eq a => a -> Bag a -> Bag a
 > del el [] = []
-> del el ((b1, 1):bs) = if el == b1 
+> del el ((b1, 1):bs) = if el == b1
 >                        then bs
 >                        else (b1,1):(del el bs)
-> del el (b:bs) = if el == fst b 
->                  then (el, snd b - 1):bs 
+> del el (b:bs) = if el == fst b
+>                  then (el, snd b - 1):bs
 >                  else b:(del el bs)
 
 
@@ -75,3 +79,102 @@ e) Define a function isbag that computes the intersection (common elements) of t
 > size :: Bag a -> Int
 > size [] = 0
 > size ((el, ec):es) = ec + size es
+
++-------------+
+| Excercise 2 |
++-------------+
+
+> type Node = Int
+> type Edge = (Node,Node)
+> type Graph = [Edge]
+> type Path = [Node]
+
+(a) Define the function nodes :: Graph -> [Node] that computes the list of nodes contained in a given graph. For example, nodes g = [1,2,3,4].
+
+>
+
+(b) Define the function suc :: Node -> Graph -> [Node] that computes the list of successors for a node in a given graph. For example, suc 2 g = [3,4], suc 4 g = [], and suc 4 h = [4].
+
+>
+
+(c) Define the function detach :: Node -> Graph -> Graph that removes a node together with all of its incident edges from a graph. For example, detach 3 g = [(1,2),(2,4)] and detach 2 h = [(1,3),(4,4)].
+
+>
+
+(d) Define the function cyc :: Int -> Graph that creates a cycle of any given number. For example, cyc 4 = [(1,2),(2,3),(3,4),(4,1)].
+
+>
+
++-------------+
+| Excercise 3 |
++-------------+
+
+> type Number = Int
+> type Point = (Number,Number)
+> type Length = Number
+> data Shape = Pt Point
+>   | Circle Point Length
+>   | Rect Point Length Length
+> deriving Show
+> type Figure = [Shape]
+> type BBox = (Point,Point)
+
+(a) Define the function width that computes the width of a shape.
+
+    width :: Shape -> Length
+
+    For example, the widths of the shapes in the figure f are as follows.
+    f = [Pt (4,4), Circle (5,5) 3, Rect (3,3) 7 2]
+
+    > map width f
+    [0,6,7]
+
+>
+
+(b) Define the function bbox that computes the bounding box of a shape.
+
+    bbox :: Shape -> BBox
+
+    The bounding boxes of the shapes in the figure f are as follows.
+
+    > map bbox f
+    [((4,4),(4,4)),((2,2),(8,8)),((3,3),(10,5))]
+
+>
+
+(c) Define the function minX that computes the minimum x coordinate of a shape.
+
+    minX :: Shape -> Number
+
+    The minimum x coordinates of the shapes in the figure f are as follows.
+
+    > map minX f
+    [4,2,3]
+
+>
+
+(d) Define a function move that moves the position of a shape by a vector given by a point as its second argument.
+    move :: Shape -> Point -> Shape
+
+    It is probably a good idea to define and use an auxiliary function addPt :: Point -> Point -> Point, which adds two points component wise.
+
+>
+
+(e) Define a function alignLeft that transforms one figure into another one in which all shapes have the same minX coordinate but are otherwise unchanged.
+
+    alignLeft :: Figure -> Figure
+
+    Note: It might be helpful to define an auxiliary function moveToX :: Number -> Shape -> Shape that changes a shape’s position so that its minX coordinate is equal to the number given as first argument.
+
+>
+
+(f) Define a function inside that checks whether one shape is inside of another one, that is, whether the area covered by the first shape is also covered by the second shape.
+
+    inside :: Shape -> Shape -> Bool
+
+    Hint: Think about what one shape being inside another means for the bounding boxes of both shapes.
+    Note that this remark is meant to help with some cases, but it doesn’t solve all.
+
+>
+
+
