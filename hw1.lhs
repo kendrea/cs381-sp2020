@@ -92,9 +92,20 @@ e) Define a function isbag that computes the intersection (common elements) of t
 > type Graph = [Edge]
 > type Path = [Node]
 
+> g :: Graph
+> g = [(1,2),(1,3),(2,3),(2,4),(3,4)]
+> h :: Graph
+> h = [(1,2),(1,3),(2,1),(3,2),(4,4)]
+
 (a) Define the function nodes :: Graph -> [Node] that computes the list of nodes contained in a given graph. For example, nodes g = [1,2,3,4].
 
->
+Listcomp attempt:
+--> nodes :: Graph -> [Node]
+--> nodes g = norm concat [[fst a, snd a] | a <- g]
+
+> nodes :: Graph -> [Node]
+> nodes [] = []
+> nodes (x:xs) = norm $ fst x : snd x : nodes xs
 
 (b) Define the function suc :: Node -> Graph -> [Node] that computes the list of successors for a node in a given graph. For example, suc 2 g = [3,4], suc 4 g = [], and suc 4 h = [4].
 
