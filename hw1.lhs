@@ -56,11 +56,22 @@ Bag: [(x, n), ...]
 >                           | ec <= snd b = True
 >                           | otherwise = False
 
-e) Define a function isbag that computes the intersection of two multisets.
+e) Define a function isbag that computes the intersection (common elements) of two multisets.
 
- > isbag :: Eq a => Bag a -> Bag a -> Bag a
+> isbag :: Eq a => Bag a -> Bag a -> Bag a
+> isbag [] _ = []
+> isbag _ [] = []
+> isbag (a:as) b = isbag' a b ++ isbag as b
+>
+> -- helper function, checks only one element
+> isbag' :: Eq a => (a, Int) -> Bag a -> Bag a
+> isbag' _ [] = []
+> isbag' e@(el, ec) (b:bs) | el /= fst b = isbag' e bs
+>                          | otherwise = [(el, min ec (snd b))]
 
 
 (f) Define a function size that computes the number of elements contained in a bag.
 
- > size :: Bag a -> Int
+> size :: Bag a -> Int
+> size [] = 0
+> size ((el, ec):es) = ec + size es
