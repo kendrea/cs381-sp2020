@@ -92,27 +92,83 @@ e) Define a function isbag that computes the intersection (common elements) of t
 > type Graph = [Edge]
 > type Path = [Node]
 
+> g :: Graph
+> g = [(1,2),(1,3),(2,3),(2,4),(3,4)]
+> h :: Graph
+> h = [(1,2),(1,3),(2,1),(3,2),(4,4)]
+
 (a) Define the function nodes :: Graph -> [Node] that computes the list of nodes contained in a given graph. For example, nodes g = [1,2,3,4].
 
+List Comprehension:
+
 > nodes :: Graph -> [Node]
-> nodes []         = []
-> nodes ((a,b):xs) = nub ([a,b] ++ nodes xs)
+> nodes g = norm $ concat [[fst a, snd a] | a <- g]
+
+Recursive with Tuple Access:
+
+> --nodes :: Graph -> [Node]
+> --nodes []     = []
+> --nodes (x:xs) = norm $ fst x : snd x : nodes xs
+
+Recursive with Segmenting
+
+> --nodes :: Graph -> [Node]
+> --nodes []         = []
+> --nodes ((a,b):xs) = nub ([a,b] ++ nodes xs)
 
 (b) Define the function suc :: Node -> Graph -> [Node] that computes the list of successors for a node in a given graph. For example, suc 2 g = [3,4], suc 4 g = [], and suc 4 h = [4].
+
+List Comprehension:
 
 > suc :: Node -> Graph -> [Node]
 > suc n g = [y | (x,y) <- g, x == n]
 
+List Comprehension with Tuple Access:
+
+> --suc :: Node -> Graph -> [Node]
+> --suc n g = [snd a | a <- g, fst a == n]
+
+Recursive:
+
+> --suc :: Node -> Graph -> [Node]
+> --suc _ []     = []
+> --suc n (x:xs) = if fst x == n then snd x : suc n xs else suc n xs
+
 (c) Define the function detach :: Node -> Graph -> Graph that removes a node together with all of its incident edges from a graph. For example, detach 3 g = [(1,2),(2,4)] and detach 2 h = [(1,3),(4,4)].
 
-> detach :: Node -> Graph -> Graph
-> detach n g = [(x,y) | (x,y) <- g, not (x == n || y == n)]
+List Comprehension:
+
+> detatch :: Node -> Graph -> Graph
+> detatch n g = [a | a <- g , fst a /= n, snd a /= n]
+
+Alt. List Comprehension: 
+
+> --detach :: Node -> Graph -> Graph
+> --detach n g = [(x,y) | (x,y) <- g, not (x == n || y == n)]
+
+Recursive:
+
+> --detatch :: Node -> Graph -> Graph
+> --detatch _ []     = []
+> --detatch n (x:xs) = if fst x /= n && snd x /= n then x : detatch n xs else detatch n xs
 
 (d) Define the function cyc :: Int -> Graph that creates a cycle of any given number. For example, cyc 4 = [(1,2),(2,3),(3,4),(4,1)].
 
+List Comprehension:
+
 > cyc :: Int -> Graph
-> cyc 0 = []
-> cyc c = [(x, x+1) | x <- [1 .. c-1]] ++ [(c, 1)]
+> cyc n = [(a, a `mod` n + 1) | a <- [1..n]]
+
+Alt. List Comprehension:
+
+> --cyc :: Int -> Graph
+> --cyc 0 = []
+> --cyc c = [(x, x+1) | x <- [1 .. c-1]] ++ [(c, 1)]
+
+Iterative:
+
+> --cyc :: Int -> Graph
+> --cyc n = zip [1..n] $ [2..n] ++ [1]
 
 +------------+
 | Exercise 3 |
