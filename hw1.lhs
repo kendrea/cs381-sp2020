@@ -28,9 +28,9 @@ Bag: [(x, n), ...]
 
 > ins :: Eq a => a -> Bag a -> Bag a
 > ins new [] = [(new,1)]
-> ins new (b:bs) = if new == fst b
->                  then (new, snd b + 1):bs
->                  else b:(ins new bs)
+> ins new (b:bs) | new == fst b = (new, snd b + 1):bs
+>                | otherwise = b:(ins new bs)
+
 
 (b) Define the function del that removes an element from a multiset.
 
@@ -38,12 +38,11 @@ Bag: [(x, n), ...]
 
 > del :: Eq a => a -> Bag a -> Bag a
 > del el [] = []
-> del el ((b1, 1):bs) = if el == b1
->                        then bs
->                        else (b1,1):(del el bs)
-> del el (b:bs) = if el == fst b
->                  then (el, snd b - 1):bs
->                  else b:(del el bs)
+> del el ((b1, 1):bs) | el == b1 = bs
+>                     | otherwise = (b1,1):(del el bs)
+> del el (b:bs) | el == fst b = (el, snd b - 1):bs
+>               | otherwise = b:(del el bs)
+
 
 (c) Define a function bag that takes a list of values and produces a multiset representation.
 
@@ -59,6 +58,7 @@ Bag: [(x, n), ...]
 > bag :: Eq a => [a] -> Bag a
 > bag (a:[]) = ins a []
 > bag (a:as) = ins a (bag as)
+
 
 (d) Define a function subbag that determines whether or not its first argument bag is contained in the second.
 
@@ -78,6 +78,7 @@ Bag: [(x, n), ...]
 > subbag' e@(el, ec) (b:bs) | el /= fst b = subbag' e bs
 >                           | ec <= snd b = True
 >                           | otherwise = False
+
 
 e) Define a function isbag that computes the intersection (common elements) of two multisets.
 
@@ -103,6 +104,8 @@ e) Define a function isbag that computes the intersection (common elements) of t
 > size [] = 0
 > size ((el, ec):es) = ec + size es
 
+
+
 +------------+
 | Exercise 2 |
 +------------+
@@ -116,6 +119,7 @@ e) Define a function isbag that computes the intersection (common elements) of t
 > g = [(1,2),(1,3),(2,3),(2,4),(3,4)]
 > h :: Graph
 > h = [(1,2),(1,3),(2,1),(3,2),(4,4)]
+
 
 (a) Define the function nodes :: Graph -> [Node] that computes the list of nodes contained in a given graph. For example, nodes g = [1,2,3,4].
 
@@ -136,6 +140,7 @@ Recursive with Segmenting
 > --nodes []         = []
 > --nodes ((a,b):xs) = nub ([a,b] ++ nodes xs)
 
+
 (b) Define the function suc :: Node -> Graph -> [Node] that computes the list of successors for a node in a given graph. For example, suc 2 g = [3,4], suc 4 g = [], and suc 4 h = [4].
 
 List Comprehension:
@@ -153,6 +158,7 @@ Recursive:
 > --suc :: Node -> Graph -> [Node]
 > --suc _ []     = []
 > --suc n (x:xs) = if fst x == n then snd x : suc n xs else suc n xs
+
 
 (c) Define the function detach :: Node -> Graph -> Graph that removes a node together with all of its incident edges from a graph. For example, detach 3 g = [(1,2),(2,4)] and detach 2 h = [(1,3),(4,4)].
 
@@ -172,6 +178,7 @@ Recursive:
 > --detatch _ []     = []
 > --detatch n (x:xs) = if fst x /= n && snd x /= n then x : detatch n xs else detatch n xs
 
+
 (d) Define the function cyc :: Int -> Graph that creates a cycle of any given number. For example, cyc 4 = [(1,2),(2,3),(3,4),(4,1)].
 
 List Comprehension:
@@ -190,6 +197,8 @@ Iterative:
 > --cyc :: Int -> Graph
 > --cyc n = zip [1..n] $ [2..n] ++ [1]
 
+
+
 +------------+
 | Exercise 3 |
 +------------+
@@ -204,6 +213,7 @@ Iterative:
 > type Figure = [Shape]
 > type BBox = (Point,Point)
 
+
 (a) Define the function width that computes the width of a shape.
 
     width :: Shape -> Length
@@ -216,6 +226,7 @@ Iterative:
 
 >
 
+
 (b) Define the function bbox that computes the bounding box of a shape.
 
     bbox :: Shape -> BBox
@@ -226,6 +237,7 @@ Iterative:
     [((4,4),(4,4)),((2,2),(8,8)),((3,3),(10,5))]
 
 >
+
 
 (c) Define the function minX that computes the minimum x coordinate of a shape.
 
@@ -238,12 +250,14 @@ Iterative:
 
 >
 
+
 (d) Define a function move that moves the position of a shape by a vector given by a point as its second argument.
     move :: Shape -> Point -> Shape
 
     It is probably a good idea to define and use an auxiliary function addPt :: Point -> Point -> Point, which adds two points component wise.
 
 >
+
 
 (e) Define a function alignLeft that transforms one figure into another one in which all shapes have the same minX coordinate but are otherwise unchanged.
 
@@ -252,6 +266,7 @@ Iterative:
     Note: It might be helpful to define an auxiliary function moveToX :: Number -> Shape -> Shape that changes a shape’s position so that its minX coordinate is equal to the number given as first argument.
 
 >
+
 
 (f) Define a function inside that checks whether one shape is inside of another one, that is, whether the area covered by the first shape is also covered by the second shape.
 
