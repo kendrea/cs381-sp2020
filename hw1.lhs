@@ -67,14 +67,14 @@ Bag: [(x, n), ...]
     Note that a bag b is contained in a bag b′ if every element that occurs n times in b occurs also at least n times in b′.
 
 > subbag :: Eq a => Bag a -> Bag a -> Bool
-> subbag [] _     = True
-> subbag _ []     = False
+> subbag [] _ = True
+> subbag _ [] = False
 > subbag (a:as) b = if subbag' a b then subbag as b else False
 >
 > -- helper function, checks only one element
 > subbag' :: Eq a => (a, Int) -> Bag a -> Bool
 > subbag' _ [] = False
-> subbag' (el, ec) (b:[])   = el == fst b && ec <= snd b
+> subbag' (el, ec) (b:[]) = el == fst b && ec <= snd b
 > subbag' e@(el, ec) (b:bs) | el /= fst b = subbag' e bs
 >                           | ec <= snd b = True
 >                           | otherwise = False
@@ -85,8 +85,8 @@ e) Define a function isbag that computes the intersection (common elements) of t
     isbag :: Eq a => Bag a -> Bag a -> Bag a
 
 > isbag :: Eq a => Bag a -> Bag a -> Bag a
-> isbag [] _     = []
-> isbag _ []     = []
+> isbag [] _ = []
+> isbag _ [] = []
 > isbag (a:as) b = isbag' a b ++ isbag as b
 >
 > -- helper function, checks only one element
@@ -101,7 +101,7 @@ e) Define a function isbag that computes the intersection (common elements) of t
     size :: Bag a -> Int
 
 > size :: Bag a -> Int
-> size []            = 0
+> size [] = 0
 > size ((el, ec):es) = ec + size es
 
 
@@ -224,7 +224,7 @@ Iterative:
     [0,6,7]
 
 > width :: Shape -> Length
-> width (Pt _)       = 0
+> width (Pt _) = 0
 > width (Circle _ r) = r * 2
 > width (Rect _ w _) = w
 
@@ -239,7 +239,7 @@ Iterative:
     [((4,4),(4,4)),((2,2),(8,8)),((3,3),(10,5))]
 
 > bbox :: Shape -> BBox
-> bbox (Pt p)       = (p, p)
+> bbox (Pt p) = (p, p)
 > bbox (Circle p r) = ((fst p - r, snd p - r), (fst p + r, snd p + r))
 > bbox (Rect p w h) = (p, (fst p + w, snd p + h))
 
@@ -254,7 +254,7 @@ Iterative:
     [4,2,3]
 
 > minX :: Shape -> Number
-> minX (Pt p)       = fst p
+> minX (Pt p) = fst p
 > minX (Circle p r) = fst p - r
 > minX (Rect p _ _) = fst p
 
@@ -283,11 +283,11 @@ Iterative:
     * Programmer's Note: assuming the end x-coordinate can be whatever as long all shapes are aligned to it, as opposed to aligning all shapes to the x-coord of the leftmost shape
 
 > alignLeft :: Figure -> Figure
-> alignLeft []     = []
+> alignLeft [] = []
 > alignLeft (s:ss) = moveToX 0 s : alignLeft ss
 >
 > moveToX :: Number -> Shape -> Shape
-> moveToX x' (Pt (x,y))       = Pt (x',y)
+> moveToX x' (Pt (x,y)) = Pt (x',y)
 > moveToX x' (Circle (x,y) r) = Circle (x'+r,y) r
 > moveToX x' (Rect (x,y) l w) = Rect (x',y) l w
 
