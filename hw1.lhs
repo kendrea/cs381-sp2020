@@ -112,11 +112,21 @@ Recursive:
 
 (b) Define the function suc :: Node -> Graph -> [Node] that computes the list of successors for a node in a given graph. For example, suc 2 g = [3,4], suc 4 g = [], and suc 4 h = [4].
 
+List Comprehension
+
+> suc :: Node -> Graph -> [Node]
+> suc n g = [snd a | a <- g, fst a == n]
+
+Recursive:
+
 > --suc :: Node -> Graph -> [Node]
+> --suc _ [] = []
+> --suc n (x:xs) = if fst x == n then snd x : suc n xs else suc n xs
 
 (c) Define the function detach :: Node -> Graph -> Graph that removes a node together with all of its incident edges from a graph. For example, detach 3 g = [(1,2),(2,4)] and detach 2 h = [(1,3),(4,4)].
 
->
+> detatch :: Node -> Graph -> Graph
+> detatch n g = [a | a <- g , fst a /= n, snd a /= n]
 
 (d) Define the function cyc :: Int -> Graph that creates a cycle of any given number. For example, cyc 4 = [(1,2),(2,3),(3,4),(4,1)].
 
