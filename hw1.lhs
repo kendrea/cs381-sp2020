@@ -107,12 +107,12 @@ List Comprehension:
 Recursive:
 
 > --nodes :: Graph -> [Node]
-> --nodes [] = []
+> --nodes []     = []
 > --nodes (x:xs) = norm $ fst x : snd x : nodes xs
 
 (b) Define the function suc :: Node -> Graph -> [Node] that computes the list of successors for a node in a given graph. For example, suc 2 g = [3,4], suc 4 g = [], and suc 4 h = [4].
 
-List Comprehension
+List Comprehension:
 
 > suc :: Node -> Graph -> [Node]
 > suc n g = [snd a | a <- g, fst a == n]
@@ -120,17 +120,33 @@ List Comprehension
 Recursive:
 
 > --suc :: Node -> Graph -> [Node]
-> --suc _ [] = []
+> --suc _ []     = []
 > --suc n (x:xs) = if fst x == n then snd x : suc n xs else suc n xs
 
 (c) Define the function detach :: Node -> Graph -> Graph that removes a node together with all of its incident edges from a graph. For example, detach 3 g = [(1,2),(2,4)] and detach 2 h = [(1,3),(4,4)].
 
+List Comprehension:
+
 > detatch :: Node -> Graph -> Graph
 > detatch n g = [a | a <- g , fst a /= n, snd a /= n]
 
+Recursive:
+
+> --detatch :: Node -> Graph -> Graph
+> --detatch _ []     = []
+> --detatch n (x:xs) = if fst x /= n && snd x /= n then x : detatch n xs else detatch n xs
+
 (d) Define the function cyc :: Int -> Graph that creates a cycle of any given number. For example, cyc 4 = [(1,2),(2,3),(3,4),(4,1)].
 
->
+List Comprehension:
+
+> cyc :: Int -> Graph
+> cyc n = [(a, a `mod` n + 1) | a <- [1..n]]
+
+Iterative:
+
+> --cyc :: Int -> Graph
+> --cyc n = zip [1..n] $ [2..n] ++ [1]
 
 +-------------+
 | Excercise 3 |
