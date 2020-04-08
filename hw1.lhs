@@ -265,7 +265,13 @@ Iterative:
 
     It is probably a good idea to define and use an auxiliary function addPt :: Point -> Point -> Point, which adds two points component wise.
 
->
+> addPt :: Point -> Point -> Point
+> addPt (ax, ay) (bx, by) = (ax + bx, ay + by)
+
+> move :: Shape -> Point -> Shape
+> move (Pt p) d       = Pt (addPt p d)
+> move (Circle p r) d = Circle (addPt p d) r
+> move (Rect p w h) d = Rect (addPt p d) w h
 
 
 (e) Define a function alignLeft that transforms one figure into another one in which all shapes have the same minX coordinate but are otherwise unchanged.
