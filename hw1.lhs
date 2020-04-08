@@ -274,7 +274,16 @@ Iterative:
 
     Note: It might be helpful to define an auxiliary function moveToX :: Number -> Shape -> Shape that changes a shape’s position so that its minX coordinate is equal to the number given as first argument.
 
+    * Programmer's Note: assuming the end x-coordinate can be whatever as long all shapes are aligned to it, as opposed to aligning all shapes to the x-coord of the leftmost shape
+
+> alignLeft :: Figure -> Figure
+> alignLeft [] = []
+> alignLeft (s:ss) = moveToX 0 s : alignLeft ss
 >
+> moveToX :: Number -> Shape -> Shape
+> moveToX x' (Pt (x,y)) = Pt (x',y)
+> moveToX x' (Circle (x,y) r) = Circle (x'+r,y) r
+> moveToX x' (Rect (x,y) l w) = Rect (x',y) l w
 
 
 (f) Define a function inside that checks whether one shape is inside of another one, that is, whether the area covered by the first shape is also covered by the second shape.
