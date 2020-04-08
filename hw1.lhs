@@ -219,8 +219,7 @@ Iterative:
     width :: Shape -> Length
 
     For example, the widths of the shapes in the figure f are as follows.
-    f = [Pt (4,4), Circle (5,5) 3, Rect (3,3) 7 2]
-
+    > f = [Pt (4,4), Circle (5,5) 3, Rect (3,3) 7 2]
     > map width f
     [0,6,7]
 
@@ -254,10 +253,14 @@ Iterative:
     > map minX f
     [4,2,3]
 
->
+> minX :: Shape -> Number
+> minX (Pt p) = fst p
+> minX (Circle p r) = fst p - r
+> minX (Rect p _ _) = fst p
 
 
 (d) Define a function move that moves the position of a shape by a vector given by a point as its second argument.
+
     move :: Shape -> Point -> Shape
 
     It is probably a good idea to define and use an auxiliary function addPt :: Point -> Point -> Point, which adds two points component wise.
