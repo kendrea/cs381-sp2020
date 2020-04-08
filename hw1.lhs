@@ -250,7 +250,10 @@ Iterative:
     > map minX f
     [4,2,3]
 
-> 
+> minX :: Shape -> Number
+> minX (Pt p) = fst p
+> minX (Circle p r) = fst p - r
+> minX (Rect p _ _) = fst p
 
 
 (d) Define a function move that moves the position of a shape by a vector given by a point as its second argument.
