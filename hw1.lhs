@@ -224,7 +224,10 @@ Iterative:
     > map width f
     [0,6,7]
 
->
+> width :: Shape -> Length
+> width (Pt _) = 0
+> width (Circle _ r) = r * 2
+> width (Rect _ w _) = w
 
 
 (b) Define the function bbox that computes the bounding box of a shape.
@@ -236,7 +239,10 @@ Iterative:
     > map bbox f
     [((4,4),(4,4)),((2,2),(8,8)),((3,3),(10,5))]
 
->
+> bbox :: Shape -> BBox
+> bbox (Pt p) = (p, p)
+> bbox (Circle p r) = ((fst p - r, snd p - r), (fst p + r, snd p + r))
+> bbox (Rect p w h) = (p, (fst p + w, snd p + h))
 
 
 (c) Define the function minX that computes the minimum x coordinate of a shape.
