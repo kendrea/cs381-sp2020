@@ -22,14 +22,19 @@ Bag: [(x, n), ...]
 
 (a) Define the function ins that inserts an element into a multiset.
 
+    ins :: Eq a => a -> Bag a -> Bag a
+
+    (Note: The class constraint ”Eq a =>” restricts the element type a to those types that allow the comparison of elements for equality with ==.)
+
 > ins :: Eq a => a -> Bag a -> Bag a
 > ins new [] = [(new,1)]
 > ins new (b:bs) = if new == fst b
 >                  then (new, snd b + 1):bs
 >                  else b:(ins new bs)
 
-
 (b) Define the function del that removes an element from a multiset.
+
+    del :: Eq a => a -> Bag a -> Bag a
 
 > del :: Eq a => a -> Bag a -> Bag a
 > del el [] = []
@@ -40,15 +45,26 @@ Bag: [(x, n), ...]
 >                  then (el, snd b - 1):bs
 >                  else b:(del el bs)
 
-
 (c) Define a function bag that takes a list of values and produces a multiset representation.
+
+    bag :: Eq a => [a] -> Bag a
+
+    For example, with xs = [7,3,8,7,3,2,7,5] we get the following result.
+
+    > bag xs
+    [(5,1),(7,3),(2,1),(3,2),(8,1)]
+
+    (Note: It’s a good idea to use of the function ins defined earlier.)
 
 > bag :: Eq a => [a] -> Bag a
 > bag (a:[]) = ins a []
 > bag (a:as) = ins a (bag as)
 
-
 (d) Define a function subbag that determines whether or not its first argument bag is contained in the second.
+
+    subbag :: Eq a => Bag a -> Bag a -> Bool
+
+    Note that a bag b is contained in a bag b′ if every element that occurs n times in b occurs also at least n times in b′.
 
 > subbag :: Eq a => Bag a -> Bag a -> Bool
 > subbag [] _ = True
@@ -65,6 +81,8 @@ Bag: [(x, n), ...]
 
 e) Define a function isbag that computes the intersection (common elements) of two multisets.
 
+    isbag :: Eq a => Bag a -> Bag a -> Bag a
+
 > isbag :: Eq a => Bag a -> Bag a -> Bag a
 > isbag [] _ = []
 > isbag _ [] = []
@@ -78,6 +96,8 @@ e) Define a function isbag that computes the intersection (common elements) of t
 
 
 (f) Define a function size that computes the number of elements contained in a bag.
+
+    size :: Bag a -> Int
 
 > size :: Bag a -> Int
 > size [] = 0
@@ -141,7 +161,7 @@ List Comprehension:
 > detatch :: Node -> Graph -> Graph
 > detatch n g = [a | a <- g , fst a /= n, snd a /= n]
 
-Alt. List Comprehension: 
+Alt. List Comprehension:
 
 > --detach :: Node -> Graph -> Graph
 > --detach n g = [(x,y) | (x,y) <- g, not (x == n || y == n)]
