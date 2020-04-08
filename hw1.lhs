@@ -5,9 +5,9 @@
 CS 381 Spring 2020
 Kendrea Beers, Robert Detjens, Jackson Golletz, Lyell Read, Zach Rogers
 
-+-------------+
-| Excercise 1 |
-+-------------+
++------------+
+| Exercise 1 |
++------------+
 
 > import Data.List (nub,sort)
 
@@ -83,9 +83,9 @@ e) Define a function isbag that computes the intersection (common elements) of t
 > size [] = 0
 > size ((el, ec):es) = ec + size es
 
-+-------------+
-| Excercise 2 |
-+-------------+
++------------+
+| Exercise 2 |
++------------+
 
 > type Node = Int
 > type Edge = (Node,Node)
@@ -94,23 +94,29 @@ e) Define a function isbag that computes the intersection (common elements) of t
 
 (a) Define the function nodes :: Graph -> [Node] that computes the list of nodes contained in a given graph. For example, nodes g = [1,2,3,4].
 
->
+> nodes :: Graph -> [Node]
+> nodes []         = []
+> nodes ((a,b):xs) = nub ([a,b] ++ nodes xs)
 
 (b) Define the function suc :: Node -> Graph -> [Node] that computes the list of successors for a node in a given graph. For example, suc 2 g = [3,4], suc 4 g = [], and suc 4 h = [4].
 
->
+> suc :: Node -> Graph -> [Node]
+> suc n g = [y | (x,y) <- g, x == n]
 
 (c) Define the function detach :: Node -> Graph -> Graph that removes a node together with all of its incident edges from a graph. For example, detach 3 g = [(1,2),(2,4)] and detach 2 h = [(1,3),(4,4)].
 
->
+> detach :: Node -> Graph -> Graph
+> detach n g = [(x,y) | (x,y) <- g, not (x == n || y == n)]
 
 (d) Define the function cyc :: Int -> Graph that creates a cycle of any given number. For example, cyc 4 = [(1,2),(2,3),(3,4),(4,1)].
 
->
+> cyc :: Int -> Graph
+> cyc 0 = []
+> cyc c = [(x, x+1) | x <- [1 .. c-1]] ++ [(c, 1)]
 
-+-------------+
-| Excercise 3 |
-+-------------+
++------------+
+| Exercise 3 |
++------------+
 
 > type Number = Int
 > type Point = (Number,Number)
