@@ -1,3 +1,13 @@
+g :: Graph
+g = [(1,2),(1,3),(2,3),(2,4),(3,4)]
+ 
+h :: Graph
+h = [(1,2),(1,3),(2,1),(3,2),(4,4)]
+ 
+f = [Pt (4,4), Circle (5,5) 3, Rect (3,3) 7 2]
+ 
+test_bag = [(5,1),(7,3),(2,1),(3,2),(8,1)]
+ 
 -- Unit tests
 main = do
     print "Nodes"
@@ -15,6 +25,7 @@ main = do
  
     print "Cyc"
     print $ cyc 4 == [(4,1),(1,2),(2,3),(3,4)]
+ 
     print "Insertion:"
     print $ ins 99 test_bag == [(5,1),(7,3),(2,1),(3,2),(8,1),(99,1)]
     print $ ins 3 test_bag == [(5,1),(7,3),(2,1),(3,3),(8,1)]
