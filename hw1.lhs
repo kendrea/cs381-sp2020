@@ -28,8 +28,8 @@ Bag: [(x, n), ...]
 
 > ins :: Eq a => a -> Bag a -> Bag a
 > ins new [] = [(new,1)]
-> ins new (b:bs) | new == fst b = (new, snd b + 1):bs
->                | otherwise = b:(ins new bs)
+> ins new (b:bs) | new == fst b     = (new, snd b + 1):bs
+>                | otherwise        = b:(ins new bs)
 
 
 (b) Define the function del that removes an element from a multiset.
@@ -204,14 +204,14 @@ Iterative:
 +------------+
 
 > type Number = Int
-> type Point = (Number,Number)
+> type Point  = (Number,Number)
 > type Length = Number
-> data Shape = Pt Point
->   | Circle Point Length
->   | Rect Point Length Length
->   deriving Show
+> data Shape  = Pt     Point
+>             | Circle Point Length
+>             | Rect   Point Length Length
+>             deriving Show
 > type Figure = [Shape]
-> type BBox = (Point,Point)
+> type BBox   = (Point,Point)
 
 
 (a) Define the function width that computes the width of a shape.
@@ -224,7 +224,10 @@ Iterative:
     > map width f
     [0,6,7]
 
->
+> width :: Shape -> Length
+> width (Pt     _    ) = 0
+> width (Circle _ r  ) = 2 * r
+> width (Rect   _ w _) = w
 
 
 (b) Define the function bbox that computes the bounding box of a shape.
