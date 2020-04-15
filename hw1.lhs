@@ -299,4 +299,5 @@ Iterative:
     Hint: Think about what one shape being inside another means for the bounding boxes of both shapes.
     Note that this remark is meant to help with some cases, but it doesn’t solve all.
 
->
+> inside :: Shape -> Shape -> Bool
+> inside a b = False
