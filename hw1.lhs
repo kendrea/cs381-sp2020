@@ -67,13 +67,13 @@ Bag: [(x, n), ...]
     Note that a bag b is contained in a bag b′ if every element that occurs n times in b occurs also at least n times in b′.
 
 > subbag :: Eq a => Bag a -> Bag a -> Bool
-> subbag [] _ = True
-> subbag _ [] = False
+> subbag [] _     = True
+> subbag _ []     = False
 > subbag (a:as) b = if subbag' a b then subbag as b else False
 >
 > -- helper function, checks only one element
 > subbag' :: Eq a => (a, Int) -> Bag a -> Bool
-> subbag' _ [] = False
+> subbag' _ []            = False
 > subbag' (el, ec) (b:[]) = el == fst b && ec <= snd b
 > subbag' e@(el, ec) (b:bs) | el /= fst b = subbag' e bs
 >                           | ec <= snd b = True
@@ -85,8 +85,8 @@ e) Define a function isbag that computes the intersection (common elements) of t
     isbag :: Eq a => Bag a -> Bag a -> Bag a
 
 > isbag :: Eq a => Bag a -> Bag a -> Bag a
-> isbag [] _ = []
-> isbag _ [] = []
+> isbag [] _     = []
+> isbag _ []     = []
 > isbag (a:as) b = isbag' a b ++ isbag as b
 >
 > -- helper function, checks only one element
@@ -101,7 +101,7 @@ e) Define a function isbag that computes the intersection (common elements) of t
     size :: Bag a -> Int
 
 > size :: Bag a -> Int
-> size [] = 0
+> size []            = 0
 > size ((el, ec):es) = ec + size es
 
 
@@ -110,10 +110,10 @@ e) Define a function isbag that computes the intersection (common elements) of t
 | Exercise 2 |
 +------------+
 
-> type Node = Int
-> type Edge = (Node,Node)
+> type Node  = Int
+> type Edge  = (Node,Node)
 > type Graph = [Edge]
-> type Path = [Node]
+> type Path  = [Node]
 
 > g :: Graph
 > g = [(1,2),(1,3),(2,3),(2,4),(3,4)]
@@ -203,15 +203,15 @@ Iterative:
 | Exercise 3 |
 +------------+
 
-> type Number = Int
-> type Point = (Number,Number)
-> type Length = Number
-> data Shape = Pt Point
+> type Number   = Int
+> type Point    = (Number,Number)
+> type Length   = Number
+> data Shape    = Pt Point
 >   | Circle Point Length
 >   | Rect Point Length Length
 >   deriving Show
-> type Figure = [Shape]
-> type BBox = (Point,Point)
+> type Figure   = [Shape]
+> type BBox     = (Point,Point)
 
 
 (a) Define the function width that computes the width of a shape.
@@ -219,12 +219,14 @@ Iterative:
     width :: Shape -> Length
 
     For example, the widths of the shapes in the figure f are as follows.
-    f = [Pt (4,4), Circle (5,5) 3, Rect (3,3) 7 2]
-
+    > f = [Pt (4,4), Circle (5,5) 3, Rect (3,3) 7 2]
     > map width f
     [0,6,7]
 
->
+> width :: Shape -> Length
+> width (Pt _)       = 0
+> width (Circle _ r) = r * 2
+> width (Rect _ w _) = w
 
 
 (b) Define the function bbox that computes the bounding box of a shape.
@@ -236,7 +238,10 @@ Iterative:
     > map bbox f
     [((4,4),(4,4)),((2,2),(8,8)),((3,3),(10,5))]
 
->
+> bbox :: Shape -> BBox
+> bbox (Pt p)       = (p, p)
+> bbox (Circle p r) = ((fst p - r, snd p - r), (fst p + r, snd p + r))
+> bbox (Rect p w h) = (p, (fst p + w, snd p + h))
 
 
 (c) Define the function minX that computes the minimum x coordinate of a shape.
@@ -248,15 +253,25 @@ Iterative:
     > map minX f
     [4,2,3]
 
->
+> minX :: Shape -> Number
+> minX (Pt p)       = fst p
+> minX (Circle p r) = fst p - r
+> minX (Rect p _ _) = fst p
 
 
 (d) Define a function move that moves the position of a shape by a vector given by a point as its second argument.
+
     move :: Shape -> Point -> Shape
 
     It is probably a good idea to define and use an auxiliary function addPt :: Point -> Point -> Point, which adds two points component wise.
 
->
+> addPt :: Point -> Point -> Point
+> addPt (ax, ay) (bx, by) = (ax + bx, ay + by)
+
+> move :: Shape -> Point -> Shape
+> move (Pt p) d       = Pt (addPt p d)
+> move (Circle p r) d = Circle (addPt p d) r
+> move (Rect p w h) d = Rect (addPt p d) w h
 
 
 (e) Define a function alignLeft that transforms one figure into another one in which all shapes have the same minX coordinate but are otherwise unchanged.
@@ -265,7 +280,16 @@ Iterative:
 
     Note: It might be helpful to define an auxiliary function moveToX :: Number -> Shape -> Shape that changes a shape’s position so that its minX coordinate is equal to the number given as first argument.
 
+    * Programmer's Note: assuming the end x-coordinate can be whatever as long all shapes are aligned to it, as opposed to aligning all shapes to the x-coord of the leftmost shape
+
+> alignLeft :: Figure -> Figure
+> alignLeft []     = []
+> alignLeft (s:ss) = moveToX 0 s : alignLeft ss
 >
+> moveToX :: Number -> Shape -> Shape
+> moveToX x' (Pt (x,y))       = Pt (x',y)
+> moveToX x' (Circle (x,y) r) = Circle (x'+r,y) r
+> moveToX x' (Rect (x,y) l w) = Rect (x',y) l w
 
 
 (f) Define a function inside that checks whether one shape is inside of another one, that is, whether the area covered by the first shape is also covered by the second shape.
@@ -276,5 +300,3 @@ Iterative:
     Note that this remark is meant to help with some cases, but it doesn’t solve all.
 
 >
-
-
