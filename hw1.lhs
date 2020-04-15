@@ -299,5 +299,25 @@ Iterative:
     Hint: Think about what one shape being inside another means for the bounding boxes of both shapes.
     Note that this remark is meant to help with some cases, but it doesn’t solve all.
 
+> -- Helper function for inside
+> toRect :: BBox -> Shape
+> toRect ((ax, ay), (bx, by)) = (Rect (ax, ay) (bx - ax) (by - ay))
+
 > inside :: Shape -> Shape -> Bool
-> inside a b = False
+> -- Rect
+> inside (Pt (x, y)) (Rect (rx, ry) w h) = ((x >= rx) && (y >= ry) 
+>                                        && (x <= rx + w) 
+>                                        && (y <= ry + h))
+> inside a@(Circle _ _) b@(Rect _ _ _) = inside (toRect (bbox a)) b
+> inside (Rect a@(x, y) w h) b@(Rect _ _ _) = inside (Pt a) b && inside (Pt (x + w, y + h)) b
+
+
+> -- Circle
+> inside (Rect (x, y) w h) c@(Circle _ _) = inside (Pt (x, y)) c
+>                                         && inside (Pt (x + w, y + h)) c 
+>                                         && inside (Pt (x + w, y)) c && inside (Pt (x, y + h)) c
+> inside (Circle (ax, ay) ar) (Circle (bx, by) br) = (((ax - bx)^2) + ((ay - by)^2) <= ((br^2) - (ar^2)))
+> inside (Pt a) b@(Circle (_, _) _) = inside (Circle a 0) b
+
+> -- Pt
+> inside a b@(Pt _) = inside (toRect (bbox a)) (toRect (bbox b))
