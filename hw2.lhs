@@ -10,6 +10,16 @@ Kendrea Beers, Robert Detjens, Jackson Golletz, Lyell Read, Zach Rogers
 | Mini Logo  |
 +------------+
 
+cmd ::= pen mode
+      | moveto (pos, pos)
+      | def name (pars) cmd
+      | call name (vals)
+      | cmd; cmd
+mode ::= up | down
+pos ::= num | name
+pars ::= name, pars | name
+vals ::= num, vals | num
+
 (a) Define the abstract syntax for Mini Logo as a Haskell data type.
 
 (b) Write a Mini Logo macro `vector` that draws a line from a given position (x1, y1) to a given position (x2, y2). Represent the macro in abstract syntax, that is, as a Haskell data type value.
@@ -20,6 +30,11 @@ Kendrea Beers, Robert Detjens, Jackson Golletz, Lyell Read, Zach Rogers
 | Exercise 2                    |
 | Digital Logic Design Language |
 +-------------------------------+
+
+circuit ::= gates links
+gates ::= num:gateFn ; gates | epsilon
+gateFn ::= and | or | xor | not
+links ::= from num.num to num.num; links | epsilon
 
 (a) Define the abstract syntax for the DiCiDL language as a Haskell data type.
 
