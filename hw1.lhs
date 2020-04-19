@@ -5,6 +5,8 @@
 CS 381 Spring 2020
 Kendrea Beers, Robert Detjens, Jackson Golletz, Lyell Read, Zach Rogers
 
+
+
 +------------+
 | Exercise 1 |
 +------------+
@@ -19,6 +21,7 @@ Kendrea Beers, Robert Detjens, Jackson Golletz, Lyell Read, Zach Rogers
 Bag: [(x, n), ...]
   x: some element
   n: number of x's in the multiset
+
 
 (a) Define the function ins that inserts an element into a multiset.
 
@@ -213,6 +216,7 @@ Iterative:
 > type Figure = [Shape]
 > type BBox   = (Point,Point)
 
+
 (a) Define the function width that computes the width of a shape.
 
     width :: Shape -> Length
@@ -226,6 +230,7 @@ Iterative:
 > width (Pt     _    ) = 0
 > width (Circle _ r  ) = 2 * r
 > width (Rect   _ w _) = w
+
 
 (b) Define the function bbox that computes the bounding box of a shape.
 

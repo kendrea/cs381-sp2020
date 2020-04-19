@@ -5,6 +5,8 @@
 CS 381 Spring 2020
 Kendrea Beers, Robert Detjens, Jackson Golletz, Lyell Read, Zach Rogers
 
+
+
 +------------+
 | Exercise 1 |
 | Mini Logo  |
@@ -25,6 +27,8 @@ vals ::= num, vals | num
 (b) Write a Mini Logo macro `vector` that draws a line from a given position (x1, y1) to a given position (x2, y2). Represent the macro in abstract syntax, that is, as a Haskell data type value.
 
 (c) Define a Haskell function `steps :: Int -> Cmd` that constructs a Mini Logo program which draws a stair of n steps. Your solution should not use the macro `vector`.
+
+
 
 +-------------------------------+
 | Exercise 2                    |

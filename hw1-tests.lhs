@@ -7,6 +7,8 @@ Kendrea Beers, Robert Detjens, Jackson Golletz, Lyell Read, Zach Rogers
 
 This file contains the same code as hw1.lhs as well as some unit tests that check our work.
 
+
+
 +------------+
 | Exercise 1 |
 +------------+
@@ -21,6 +23,7 @@ This file contains the same code as hw1.lhs as well as some unit tests that chec
 Bag: [(x, n), ...]
   x: some element
   n: number of x's in the multiset
+
 
 (a) Define the function ins that inserts an element into a multiset.
 
@@ -368,11 +371,6 @@ Unit tests
 >   print "Creation:"
 >   print $ bag [2,3,3,5,7,7,7,8] == [(8,1),(7,3),(5,1),(3,2),(2,1)]
 >   print $ bag [7,3,8,7,3,2,7,5] == [(5,1),(7,3),(2,1),(3,2),(8,1)]
- 
-% >     print "Check:"
-% >     print $ checkbag (5,3) test_bag == False
-% >     print $ checkbag (3,1) test_bag == True
-% >     print $ checkbag (99,1) test_bag == False
  
 >   print "Sub:"
 >   print $ subbag [(5,1),(7,5),(2,1),(3,2),(8,1)] test_bag == False
