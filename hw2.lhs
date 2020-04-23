@@ -10,13 +10,13 @@ Kendrea Beers, Robert Detjens, Jackson Golletz, Lyell Read, Zach Rogers
 | Mini Logo  |
 +------------+
 
-cmd ::= pen mode
+cmd  ::= pen mode
       | moveto (pos, pos)
       | def name (pars) cmd
       | call name (vals)
       | cmd; cmd
 mode ::= up | down
-pos ::= num | name
+pos  ::= num | name
 pars ::= name, pars | name
 vals ::= num, vals | num
 
@@ -42,12 +42,19 @@ vals ::= num, vals | num
 +-------------------------------+
 
 circuit ::= gates links
-gates ::= num:gateFn ; gates | epsilon
-gateFn ::= and | or | xor | not
-links ::= from num.num to num.num; links | epsilon
+gates   ::= num:gateFn ; gates | epsilon
+gateFn  ::= and | or | xor | not
+links   ::= from num.num to num.num; links | epsilon
 
 (a) Define the abstract syntax for the DiCiDL language as a Haskell data type.
 
+> data Circuit = BuildCircuit Gates Links
+> --data Gates = 
+> data GateFn = And | Or | Xor | Not
+> --data Links = 
+
 (b) Represent the half adder circuit in abstract syntax, that is, as a Haskell data type value.
+
+Half Adder for A and B --> Carry = A & B; Sum = A XOR B
 
 (c) Define a Haskell function that implements a pretty printer for the abstract syntax.
