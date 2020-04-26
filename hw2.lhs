@@ -24,13 +24,17 @@ vals ::= num, vals | num
 
 > data Cmd  = Pen Mode 
 >           | Moveto Pos Pos
-> --        | TODO: Def
-> --        | TODO: Call
-> --        | TODO: Cmd
-> data Mode = Up  | Down
-> data Pos  = Int -- | String 
-> -- TODO: Pars
-> -- TODO: Vals
+>           | Def String Pars [Cmd]
+>           | Call String Vals
+> data Mode = Up      | Down
+> data Pos  = Lit Int | Ref String
+> type Pars = [String]
+> type Vals = [Int]
+
+Code comments: 
+The abstract grammar uses parentheses and commas for clarification only; we can ignore them.
+Line 27 defines a function "String" with parameters "Pars" that executes a program (array of "Cmd"s).
+The line "cmd; cmd" in the abstract syntax shows that a command can be a series of commands; this is accounted for by making Line 27 use an array of commands instead of just "Cmd".
 
 (b) Write a Mini Logo macro `vector` that draws a line from a given position (x1, y1) to a given position (x2, y2). Represent the macro in abstract syntax, that is, as a Haskell data type value.
 
