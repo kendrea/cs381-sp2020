@@ -38,6 +38,12 @@ The line "cmd; cmd" in the abstract syntax shows that a command can be a series 
 
 (b) Write a Mini Logo macro `vector` that draws a line from a given position (x1, y1) to a given position (x2, y2). Represent the macro in abstract syntax, that is, as a Haskell data type value.
 
+> vector :: Cmd
+> vector = Def "vector" ["x0", "y0", "x1", "y1"] [Pen Up, Moveto (Ref "x0") (Ref "y0"), Pen Down, Moveto (Ref "x1") (Ref "y1")]
+
+-- vectorHaskell :: (Pos, Pos) -> (Pos, Pos) -> Cmd
+-- vectorHaskell x0 y0 x1 y1 = [Pen Up, Moveto x0 y0, Pen Down, Moveto x1 y1]
+
 (c) Define a Haskell function `steps :: Int -> Cmd` that constructs a Mini Logo program which draws a stair of n steps. Your solution should not use the macro `vector`.
 
 +-------------------------------+
