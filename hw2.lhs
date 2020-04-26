@@ -98,4 +98,6 @@ links   ::= from num.num to num.num; links | epsilon
 
 Half Adder for A and B --> Carry = A & B; Sum = A XOR B
 
+> data HalfAdder = BuildCircuit [(1,Xor),(2,And)] [((1,1),(2,1)),((1,2),(2,2))]
+
 (c) Define a Haskell function that implements a pretty printer for the abstract syntax.
