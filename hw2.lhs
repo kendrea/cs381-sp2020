@@ -24,27 +24,58 @@ vals ::= num, vals | num
 
 > data Cmd  = Pen Mode 
 >           | Moveto Pos Pos
->           | Def String Pars [Cmd]
+>           | Def String Pars Cmd
 >           | Call String Vals
+>           | Cons Cmd Cmd
+>           deriving Show
 > data Mode = Up      | Down
+>           deriving Show
 > data Pos  = Lit Int | Ref String
+>           deriving Show
 > type Pars = [String]
 > type Vals = [Int]
 
 Code comments: 
 The abstract grammar uses parentheses and commas for clarification only; we can ignore them.
-Line 27 defines a function "String" with parameters "Pars" that executes a program (array of "Cmd"s).
-The line "cmd; cmd" in the abstract syntax shows that a command can be a series of commands; this is accounted for by making Line 27 use an array of commands instead of just "Cmd".
+Line 27 defines a function "String" with parameters "Pars" that executes a program "Prog".
 
 (b) Write a Mini Logo macro `vector` that draws a line from a given position (x1, y1) to a given position (x2, y2). Represent the macro in abstract syntax, that is, as a Haskell data type value.
 
-> vector :: Cmd
-> vector = Def "vector" ["x0", "y0", "x1", "y1"] [Pen Up, Moveto (Ref "x0") (Ref "y0"), Pen Down, Moveto (Ref "x1") (Ref "y1")]
+`arrToCons` is a helper function to avoid piles of nested parentheses and instead use a nice array of commands.
 
--- vectorHaskell :: (Pos, Pos) -> (Pos, Pos) -> Cmd
--- vectorHaskell x0 y0 x1 y1 = [Pen Up, Moveto x0 y0, Pen Down, Moveto x1 y1]
+> arrToCons :: [Cmd] -> Cmd
+> arrToCons (x:[]) = x
+> arrToCons (x:xs) = Cons x (arrToCons xs)
+
+`vector` is the Mini Logo macro that answers the question.
+
+> vector :: Cmd
+> vector = Def "vector" ["x0", "y0", "x1", "y1"] 
+>          (arrToCons [Pen Up, 
+>          Moveto (Ref "x0") (Ref "y0"),
+>          Pen Down, 
+>          Moveto (Ref "x1") (Ref "y1")])
+
+Just for reference, here's what `vector` could look like as a Haskell function:
+vectorHaskell :: Int -> Int -> Int -> Int -> Cmd
+vectorHaskell x0 y0 x1 y1 = [Pen Up, Moveto (Lit x0) (Lit y0), Pen Down, Moveto (Lit x1) (Lit y1)]
 
 (c) Define a Haskell function `steps :: Int -> Cmd` that constructs a Mini Logo program which draws a stair of n steps. Your solution should not use the macro `vector`.
+
+This function draws a stairstep from top right to bottom left, starting at (n,n) and ending at (0,0).
+
+Example run-through of `steps 3`: The pen moves to (3,3), draws to (2,3), draws to (2,2), checks that it is at (2,2), draws to (1,2), draws to (1,1), checks that it is at (1,1), draws to (0,1), draws to (0,0), and finally lifts up.
+
+> steps :: Int -> Cmd
+> steps n 
+>   | n<=0      = Pen Up
+>   | otherwise = arrToCons
+>                 [Pen Up,
+>                 Moveto (Lit n) (Lit n),
+>                 Pen Down,
+>                 Moveto (Lit (n-1)) (Lit (n)),
+>                 Moveto (Lit (n-1)) (Lit (n-1)),
+>                 steps (n-1)]
 
 +-------------------------------+
 | Exercise 2                    |
