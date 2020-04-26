@@ -53,9 +53,9 @@ links   ::= from num.num to num.num; links | epsilon
 (a) Define the abstract syntax for the DiCiDL language as a Haskell data type.
 
 > data Circuit = BuildCircuit Gates Links
-> --data Gates = 
-> data GateFn = And | Or | Xor | Not
-> --data Links = 
+> type Gates   = [(Int, GateFn)]
+> data GateFn  = And | Or | Xor | Not
+> type Links   = [((Int, Int), (Int, Int))]
 
 (b) Represent the half adder circuit in abstract syntax, that is, as a Haskell data type value.
 
