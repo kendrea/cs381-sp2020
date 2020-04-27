@@ -58,9 +58,6 @@ Line 27 defines a function "String" with parameters "Pars" that executes a progr
 >          Pen Down, 
 >          Moveto (Ref "x1") (Ref "y1")])
 
-Just for reference, here's what `vector` could look like as a Haskell function:
-vectorHaskell :: Int -> Int -> Int -> Int -> Cmd
-vectorHaskell x0 y0 x1 y1 = [Pen Up, Moveto (Lit x0) (Lit y0), Pen Down, Moveto (Lit x1) (Lit y1)]
 
 (c) Define a Haskell function `steps :: Int -> Cmd` that constructs a Mini Logo program which draws a stair of n steps. Your solution should not use the macro `vector`.
 
@@ -98,7 +95,15 @@ links   ::= from num.num to num.num; links | epsilon
 
 (b) Represent the half adder circuit in abstract syntax, that is, as a Haskell data type value.
 
-Half Adder for A and B --> Carry = A & B; Sum = A XOR B
+Half Adder for A and B --> Carry = A and B; Sum = A xor B
+
+A ────o──╲╲***\
+      │   ││xor>-- Sum
+B ──o─┼──╱╱___/
+    │ │
+    │ └───|***\
+    │     |and >-- Carry
+    └─────|___/
 
 > type HalfAdder = Circuit
 
@@ -107,8 +112,8 @@ Half Adder for A and B --> Carry = A & B; Sum = A XOR B
 
 (c) Define a Haskell function that implements a pretty printer for the abstract syntax.
 
-> showCircut :: Circuit -> IO ()
-> showCircut (BuildCircuit g l) = putStr (showGates g ++ showLinks l)
+> showCircuit :: Circuit -> IO ()
+> showCircuit (BuildCircuit g l) = putStr (showGates g ++ showLinks l)
 
 > showGates :: Gates -> String
 > showGates [] = ""
