@@ -97,11 +97,11 @@ links   ::= from num.num to num.num; links | epsilon
 
 Half Adder for A and B --> Carry = A and B; Sum = A xor B
 
-A ────o──╲╲***\
+A ────o──╲╲```\
       │   ││xor>-- Sum
 B ──o─┼──╱╱___/
     │ │
-    │ └───|***\
+    │ └───|```\
     │     |and >-- Carry
     └─────|___/
 
