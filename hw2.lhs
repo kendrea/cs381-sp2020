@@ -5,6 +5,8 @@
 CS 381 Spring 2020
 Kendrea Beers, Robert Detjens, Jackson Golletz, Lyell Read, Zach Rogers
 
+> import Data.Char -- for toLower
+
 +------------+
 | Exercise 1 |
 | Mini Logo  |
@@ -91,7 +93,7 @@ links   ::= from num.num to num.num; links | epsilon
 
 > data Circuit = BuildCircuit Gates Links
 > type Gates   = [(Int, GateFn)]
-> data GateFn  = And | Or | Xor | Not
+> data GateFn  = And | Or | Xor | Not deriving (Show)
 > type Links   = [((Int, Int), (Int, Int))]
 
 (b) Represent the half adder circuit in abstract syntax, that is, as a Haskell data type value.
@@ -104,3 +106,18 @@ Half Adder for A and B --> Carry = A & B; Sum = A XOR B
 > halfAdder = BuildCircuit [(1,Xor),(2,And)] [((1,1),(2,1)),((1,2),(2,2))]
 
 (c) Define a Haskell function that implements a pretty printer for the abstract syntax.
+
+> showCircut :: Circuit -> IO ()
+> showCircut (BuildCircuit g l) = putStr (showGates g ++ showLinks l)
+
+> showGates :: Gates -> String
+> showGates [] = ""
+> showGates ((ident, gate):gs) = show ident ++ ":" ++ map toLower (show gate) ++ ";\n" 
+>                                ++ showGates gs
+
+> showLinks :: Links -> String
+> showLinks [] = ""
+> showLinks (((x, xg), (y, yg)):ls) = "from " ++  show x ++ "." ++ show xg ++ 
+>                                     " to " ++ show y ++ "." ++ show yg ++ ";\n"
+>                                     ++ showLinks ls
+
