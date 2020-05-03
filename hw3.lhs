@@ -22,23 +22,34 @@ The operation LD loads its integer parameter onto the stack. The operation ADD r
 > type Prog = [Cmd]
 
 > data Cmd = LD Int
-> | ADD
-> | MULT
-> | DUP
+>          | ADD
+>          | MULT
+>          | DUP
 
 Integer stacks should be represented by the type [Int], that is, lists of integers, that is, your program should contain and use the following definition.
 
-> type Stack = [Int] 
+> type Stack = [Int]
 
-Define the semantics for the stack language as a Haskell function sem that yields the semantics of a program. Please note that the semantic domain has to be defined as a function domain (since the meaning of a stack program is a transformation of stacks) and as an error domain (since operations can fail). Therefore, sem has to have the following type where you have to find an appropriate type defintition for D. 
+Define the semantics for the stack language as a Haskell function sem that yields the semantics of a program. Please note that the semantic domain has to be defined as a function domain (since the meaning of a stack program is a transformation of stacks) and as an error domain (since operations can fail). Therefore, sem has to have the following type where you have to find an appropriate type definition for D. 
 
-> sem :: Prog -> D 
+> type D = Stack -> Maybe Stack
+
+> sem :: Prog -> D
+> sem []     s  = Just s
+> sem (c:cs) s  = case semCmd c s of
+>                   Just s' -> sem cs s'
+>                   Nothing -> Nothing
 
 To define sem you probably want to define an auxiliary function semCmd for the semantics of individual operations, which has the following type.
 
 > semCmd :: Cmd -> D
+> semCmd (LD a) s         = Just (a:s)
+> semCmd ADD    (x:(y:s)) = Just ((x+y):s)
+> semCmd MULT   (x:(y:s)) = Just ((x*y):s)
+> semCmd DUP    (x:s)     = Just (x:(x:s))
+> semCmd _      _         = Nothing
 
-Hint. Test your functions with the programs [LD 3,DUP,ADD,DUP,MULT] and [LD 3,ADD] and the empty stack [] as inputs.
+Hint: Test your functions with the programs [LD 3,DUP,ADD,DUP,MULT] and [LD 3,ADD] and the empty s [] as inputs.
 
 +------------+
 | Exercise 2 |
@@ -47,9 +58,9 @@ Hint. Test your functions with the programs [LD 3,DUP,ADD,DUP,MULT] and [LD 3,AD
 
 Consider the simplified version of Mini Logo (without macros), defined by the following abstract syntax.
 	
-> data Cmd = Pen Mode
-> | MoveTo Int Int
-> | Seq Cmd Cmd
+> data MLCmd = Pen Mode
+>            | MoveTo Int Int
+>            | Seq MLCmd MLCmd
 > data Mode = Up | Down
 
 The semantics of a Mini Logo program is ultimately a set of drawn lines. However, for the definition of the semantics a “drawing state” must be maintained that keeps track of the current position of the pen and the pen’s status (Up or Down). This state should be represented by values of the following type.
@@ -63,13 +74,13 @@ The semantic domain representing a set of drawn lines is represented by the type
 
 Define the semantics of Mini Logo by giving two function definitions. First, define a function semS that has the following type.
 
-> semS :: Cmd -> State -> (State,Lines)
+ semS :: MLCmd -> State -> (State,Lines)
 
 This function defines for each Cmd how it modifies the current drawing state and what lines it produces.
 
 After that define the semantic function sem' of the following type. (The name sem' is used to avoid a conflict with the function sem from exercise 1 and allow all definitions to go into one file.)
 
-> sem' :: Cmd -> Lines
+ sem' :: MLCmd -> Lines
 
 The function sem' should call semS. The initial state is defined to have the pen up and the current drawing position at (0, 0).
 
