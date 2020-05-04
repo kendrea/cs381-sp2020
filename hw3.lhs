@@ -43,6 +43,7 @@ Define the semantics for the stack language as a Haskell function sem that yield
 To define sem you probably want to define an auxiliary function semCmd for the semantics of individual operations, which has the following type.
 
 > semCmd :: Cmd -> D
+
 > semCmd (LD a) s         = Just (a:s)
 > semCmd ADD    (x:(y:s)) = Just ((x+y):s)
 > semCmd MULT   (x:(y:s)) = Just ((x*y):s)
@@ -62,6 +63,7 @@ Consider the simplified version of Mini Logo (without macros), defined by the fo
 >            | MoveTo Int Int
 >            | Seq MLCmd MLCmd
 > data Mode = Up | Down
+>   deriving Show
 
 The semantics of a Mini Logo program is ultimately a set of drawn lines. However, for the definition of the semantics a “drawing state” must be maintained that keeps track of the current position of the pen and the pen’s status (Up or Down). This state should be represented by values of the following type.
 
@@ -69,19 +71,40 @@ The semantics of a Mini Logo program is ultimately a set of drawn lines. However
 
 The semantic domain representing a set of drawn lines is represented by the type Lines.
 
+It is assumed that this format for a line takes the format (x1, y1, x2, y2).
+
 > type Line = (Int,Int,Int,Int)
 > type Lines = [Line]
 
 Define the semantics of Mini Logo by giving two function definitions. First, define a function semS that has the following type.
 
- semS :: MLCmd -> State -> (State,Lines)
+> semS :: MLCmd -> State -> (State,Lines)
+> semS (Pen p) (_,x,y) 				= ((p,y,x),[])
+> semS (MoveTo x y) (Up,ox,oy) 		= ((Up,x,y),[])
+> semS (MoveTo x y) (Down,ox,oy) 	= ((Down,x,y),[(ox,oy,x,y)])
+> semS (Seq c d) (m,x,y)			= semMerge (semS c (m,x,y)) (semS d (semState (semS c (m,x,y))))
+
+> semState :: (State,Lines) -> State
+> semState ((m,x,y),l) 				= (m,x,y)
+
+> semMerge :: (State,Lines) -> (State,Lines) -> (State,Lines)
+> semMerge (s1,l1) (s2,l2) 			= (s2,l1++l2)
 
 This function defines for each Cmd how it modifies the current drawing state and what lines it produces.
 
 After that define the semantic function sem' of the following type. (The name sem' is used to avoid a conflict with the function sem from exercise 1 and allow all definitions to go into one file.)
 
- sem' :: MLCmd -> Lines
+> sem' :: MLCmd -> Lines
+> sem' c 	= snd (semS c (Down, 0, 0))
+
+Example usage
+
+> cmd :: MLCmd
+> cmd = (MoveTo 4 5) `Seq` (Pen Down) `Seq` (MoveTo 1 1) `Seq` (MoveTo 0 2)
+
+> lines :: Lines
+> lines = sem' cmd
 
 The function sem' should call semS. The initial state is defined to have the pen up and the current drawing position at (0, 0).
 
-Note. To test your semantics you can use the function ppLines defined in the Haskell file provided on the class web site. This function converts a list of lines into an svg file that can be rendered by most browsers into a picture.
+Note. To test your semantics you can use the function ppLines defined in the Haskell SVG.hs file provided on the class web site. This function converts a list of lines into an svg file that can be rendered by most browsers into a picture.
