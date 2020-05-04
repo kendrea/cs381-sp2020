@@ -62,6 +62,7 @@ Consider the simplified version of Mini Logo (without macros), defined by the fo
 >            | MoveTo Int Int
 >            | Seq MLCmd MLCmd
 > data Mode = Up | Down
+>   deriving Show
 
 The semantics of a Mini Logo program is ultimately a set of drawn lines. However, for the definition of the semantics a “drawing state” must be maintained that keeps track of the current position of the pen and the pen’s status (Up or Down). This state should be represented by values of the following type.
 
@@ -74,7 +75,17 @@ The semantic domain representing a set of drawn lines is represented by the type
 
 Define the semantics of Mini Logo by giving two function definitions. First, define a function semS that has the following type.
 
- semS :: MLCmd -> State -> (State,Lines)
+> semS :: MLCmd -> State -> (State,Lines)
+> semS (Pen p) (_,x,y) = ((p,y,x),[])
+> semS (MoveTo x y) (Up,ox,oy) = ((Up,x,y),[])
+> semS (MoveTo x y) (Down,ox,oy) = ((Down,x,y),[(ox,oy,x,y)])
+> semS (Seq c d) (m,x,y) = semMerge (semS c (m,x,y)) (semS d (semState (semS c (m,x,y))))
+
+> semState :: (State,Lines) -> State
+> semState ((m,x,y),l) = (m,x,y)
+
+> semMerge :: (State,Lines) -> (State,Lines) -> (State,Lines)
+> semMerge (s1,l1) (s2,l2) = (s2,l1++l2)
 
 This function defines for each Cmd how it modifies the current drawing state and what lines it produces.
 
