@@ -11,7 +11,6 @@ Kendrea Beers, Robert Detjens, Jackson Golletz, Lyell Read, Zach Rogers
 | Type System     |
 | for the         |
 | Stack Language  |
-
 +-----------------+
 
 "We extend the simple stack language from Homework 2 (Exercise 1) by the following three operations.
