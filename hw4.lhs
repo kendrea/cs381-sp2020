@@ -43,7 +43,14 @@ The rank of a stack is given by the number of its elements. The rank of a single
 
 "First, define a function rankC that maps each stack operation to its rank."
 
-> -- rankC :: Cmd -> CmdRank
+> rankC :: Cmd -> CmdRank
+> rankC (LD _)  = (0,1)
+> rankC ADD     = (2,1)
+> rankC MULT    = (2,1)
+> rankC DUP     = (0,1)
+> rankC INC     = (1,1)
+> rankC SWAP    = (2,2)
+> rankC (POP k) = (k,0)
 
 "Then define a function rankP that computes the rank of a program. The Maybe data type is used to capture rank errors, that is, a program that contains a rank error should be mapped to Nothing whereas ranks of other programs are wrapped by the Just container."
 
