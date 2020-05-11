@@ -54,11 +54,26 @@ The rank of a stack is given by the number of its elements. The rank of a single
 
 "Then define a function rankP that computes the rank of a program. The Maybe data type is used to capture rank errors, that is, a program that contains a rank error should be mapped to Nothing whereas ranks of other programs are wrapped by the Just container."
 
-> -- rankP :: Prog -> Maybe Rank
+Given a list of commands and an implied empty stack, `rankP` returns the rank/size of the resulting stack (Nothing if negative).
+
+> rankP :: Prog -> Maybe Rank
+> rankP cs = rank cs 0
 
 "Hint: You might need to define an auxiliary function rank :: Prog -> Rank -> Maybe Rank and define rankP using rank."
 
-> -- rank :: Prog -> Rank -> Maybe Rank
+Given a list of commands and the rank/size of a stack to run them on, `rank` returns the rank/size of the resulting stack.
+When any command takes more elements off the stack than the stack contains, a rank error occurs.
+Otherwise, `rank` returns the sum of the deltas for each command.
+
+> rank :: Prog -> Rank -> Maybe Rank
+> rank []     k = Just k
+> rank (c:cs) k | k < (fst (rankC c)) = Nothing
+>               | otherwise           = rank cs (k + delta c)
+
+Given a command, `delta` simply returns the number of elements that the command would add to any stack. `delta` may be negative.  
+
+> delta :: Cmd -> Rank
+> delta c = (snd (rankC c))-(fst (rankC c))
 
 +-+
 (b)
