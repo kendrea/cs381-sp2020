@@ -18,6 +18,8 @@ Kendrea Beers, Robert Detjens, Jackson Golletz, Lyell Read, Zach Rogers
 • SWAP exchanges the two topmost elements on the stack
 • POP k pops k elements of the stack"
 
+> import Data.Maybe
+
 "The abstract syntax of this extended language is as follows."
 
 > type Prog = [Cmd]
@@ -151,4 +153,10 @@ Comment by Lyell: See https://oregonstate.instructure.com/courses/1764463/files/
 
 "Rectangles are a subset of shapes and thus describe a more restricted set of types. By restricting the application of the TD and LR operations to rectangles only one could ensure that only convex shapes without holes can be constructed. Define a type checker for the shape language that assigns types only to rectangular shapes by defining a Haskell function."
 
-> -- rect :: Shape -> Maybe BBox
+> rect :: Shape -> Maybe BBox
+> rect s@X = Just (bbox s)
+> rect s@(TD X X) = Just (bbox s)
+> rect s@(LR X X) = Just (bbox s)
+> rect s@(TD s1 s2) | snd (bbox s1) == snd (bbox s2) && (isJust (rect s1)) && (isJust (rect s2)) = Just (bbox s)
+> rect s@(LR s1 s2) | fst (bbox s1) == fst (bbox s2) && (isJust (rect s1)) && (isJust (rect s2)) = Just (bbox s)
+> rect _ = Nothing
