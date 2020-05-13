@@ -140,10 +140,10 @@ Comment by Lyell: See https://oregonstate.instructure.com/courses/1764463/files/
 > 			deriving (Eq, Show)
 
 > bboxtc :: Shape -> Type
-> bboxtc X 													= Shape
-> bboxtc (TD s1 s2)	| bbox s1 == BBox && bbox s2 == BBox 	= BBox
-> bboxtc (LR s1 s2)	| bbox s1 == BBox && bbox s2 == BBox 	= BBox
-> bboxtc _													= TypeError
+> bboxtc X 														= Shape
+> bboxtc (TD s1 s2)	| bboxtc s1 == BBox && bboxtc s2 == BBox 	= BBox
+> bboxtc (LR s1 s2)	| bboxtc s1 == BBox && bboxtc s2 == BBox 	= BBox
+> bboxtc _														= TypeError
 
 +----------+
 | Part (b) |
