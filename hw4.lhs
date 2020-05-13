@@ -33,9 +33,9 @@ Kendrea Beers, Robert Detjens, Jackson Golletz, Lyell Read, Zach Rogers
 "Even though the stack carries only integers, a type system can be defined for this language that assigns ranks to stacks and operations and ensures that a program does not result in a rank mismatch.
 The rank of a stack is given by the number of its elements. The rank of a single stack operation is given by a pair of numbers (n, m) where n indicates the number of elements the operation takes from the top of the stack and m is number of elements the operation puts onto the stack. The rank for a stack program is defined to be the rank of the stack that would be obtained if the program were run on an empty stack. A rank error occurs in a stack program when an operation with rank (n, m) is executed on a stack with rank k < n. In other words, a rank error indicates a stack underflow."
 
-+-+
-(a)
-+-+
++----------+
+| Part (a) |
++----------+
 
 "Use the following types to represent stack and operation ranks."
 
@@ -76,9 +76,9 @@ Given a command, `delta` simply returns the number of elements that the command 
 > delta :: Cmd -> Rank
 > delta c = (snd (rankC c))-(fst (rankC c))
 
-+-+
-(b)
-+-+
++----------+
+| Part (b) |
++----------+
 
 "Following the example of the function evalStatTC (defined in the file TypeCheck.hs),define a function semStatTC for evaluating stack programs that first calls the function rankP to check whether the stack program is type correct and evaluates the program only in that case. For performing the actual evaluation, semStatTC calls the function sem."
 
@@ -121,17 +121,17 @@ Given a command, `delta` simply returns the number of elements that the command 
 
 "A type can be understood as a characterization of values, summarizing a set of values at a higher level, abstracting away from some details and mapping value properties to a coarser description on the type level. In this sense, a bounding box can be considered as a type of shapes. The bounding box classifies shapes into different bounding box types. (The bounding box type information could be used to restrict, for example, the composition of shapes, such as applying TD only to shapes of the same width, although we won’t pursue this idea any further in this exercise.)"
 
-+-+
-(a)
-+-+
++----------+
+| Part (a) |
++----------+
 
 "Define a type checker for the shape language as a Haskell function."
 
 > -- bbox :: Shape -> BBox
 
-+-+
-(b)
-+-+
++----------+
+| Part (b) |
++----------+
 
 "Rectangles are a subset of shapes and thus describe a more restricted set of types. By restricting the application of the TD and LR operations to rectangles only one could ensure that only convex shapes without holes can be constructed. Define a type checker for the shape language that assigns types only to rectangular shapes by defining a Haskell function."
 
