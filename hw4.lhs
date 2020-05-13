@@ -15,7 +15,7 @@ Kendrea Beers, Robert Detjens, Jackson Golletz, Lyell Read, Zach Rogers
 
 "We extend the simple stack language from Homework 2 (Exercise 1) by the following three operations.
 • INC increments the topmost element on the stack
-• SWAP exchanges the two topmost elements on the stack 
+• SWAP exchanges the two topmost elements on the stack
 • POP k pops k elements of the stack"
 
 "The abstract syntax of this extended language is as follows."
@@ -28,6 +28,7 @@ Kendrea Beers, Robert Detjens, Jackson Golletz, Lyell Read, Zach Rogers
 >          | INC
 >          | SWAP
 >          | POP Int
+> type Stack = [Int]
 
 "Even though the stack carries only integers, a type system can be defined for this language that assigns ranks to stacks and operations and ensures that a program does not result in a rank mismatch.
 The rank of a stack is given by the number of its elements. The rank of a single stack operation is given by a pair of numbers (n, m) where n indicates the number of elements the operation takes from the top of the stack and m is number of elements the operation puts onto the stack. The rank for a stack program is defined to be the rank of the stack that would be obtained if the program were run on an empty stack. A rank error occurs in a stack program when an operation with rank (n, m) is executed on a stack with rank k < n. In other words, a rank error indicates a stack underflow."
@@ -47,7 +48,7 @@ The rank of a stack is given by the number of its elements. The rank of a single
 > rankC (LD _)  = (0,1)
 > rankC ADD     = (2,1)
 > rankC MULT    = (2,1)
-> rankC DUP     = (0,1)
+> rankC DUP     = (1,2)
 > rankC INC     = (1,1)
 > rankC SWAP    = (2,2)
 > rankC (POP k) = (k,0)
@@ -70,7 +71,7 @@ Otherwise, `rank` returns the sum of the deltas for each command.
 > rank (c:cs) k | k < (fst (rankC c)) = Nothing
 >               | otherwise           = rank cs (k + delta c)
 
-Given a command, `delta` simply returns the number of elements that the command would add to any stack. `delta` may be negative.  
+Given a command, `delta` simply returns the number of elements that the command would add to any stack. `delta` may be negative.
 
 > delta :: Cmd -> Rank
 > delta c = (snd (rankC c))-(fst (rankC c))
@@ -81,9 +82,26 @@ Given a command, `delta` simply returns the number of elements that the command 
 
 "Following the example of the function evalStatTC (defined in the file TypeCheck.hs),define a function semStatTC for evaluating stack programs that first calls the function rankP to check whether the stack program is type correct and evaluates the program only in that case. For performing the actual evaluation, semStatTC calls the function sem."
 
-> -- semStatTC :: 
+> semStatTC :: Prog -> Maybe Stack
+> semStatTC p | rankP p == Nothing = Nothing
+>             | otherwise          = Just (sem p [])
+
 
 "Note that the function sem called by semStatTC can be simplified. Its type can be simplified and its definition. What is the new type of the function sem and why can the function definition be simplified to have this type? (You do not have to give the complete new definition of the function.)"
+
+> sem :: Prog -> Stack -> Stack
+> sem []     s = s
+> sem (x:xs) s = sem xs (semCmd x s)
+
+> semCmd :: Cmd -> Stack -> Stack
+> semCmd (LD x)    s  = x:s
+> semCmd ADD  (x:y:s) = (x+y):s
+> semCmd MULT (x:y:s) = (x*y):s
+> semCmd DUP    (x:s) = x:x:s
+> semCmd INC    (x:s) = (x+1):s
+> semCmd SWAP (x:y:s) = y:x:s
+> semCmd (POP k)   s  | k > 0     = semCmd (POP (k-1)) (tail s)
+>                     | otherwise = s
 
 +-----------------+
 | Exercise 2      |
