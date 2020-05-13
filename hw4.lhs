@@ -125,9 +125,16 @@ Given a command, `delta` simply returns the number of elements that the command 
 | Part (a) |
 +----------+
 
+Comment by Lyell: See https://oregonstate.instructure.com/courses/1764463/files/folder/Haskell/4.Types?preview=78994074
+
 "Define a type checker for the shape language as a Haskell function."
 
-> -- bbox :: Shape -> BBox
+> bbox :: Shape -> BBox
+
+> bbox X 														= BBox
+> bbox (TD s1 s2)	= | bbox s1 == Shape && bbox s2 == Shape 	= BBox
+> bbox (LR s1 s2)	= | bbox s1 == Shape && bbox s2 == Shape 	= BBox
+> bbox _														= TypeError
 
 +----------+
 | Part (b) |
