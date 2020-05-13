@@ -137,7 +137,7 @@ Comment by Lyell: See https://oregonstate.instructure.com/courses/1764463/files/
 > 						max (fst (bbox s1)) (fst (bbox s2)))
 
 > data Type = Shape | BBox | TypeError
-> 			deriving (E, Show)
+> 			deriving (Eq, Show)
 
 > bboxtc :: Shape -> Type
 > bboxtc X 													= Shape
