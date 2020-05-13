@@ -130,11 +130,20 @@ Comment by Lyell: See https://oregonstate.instructure.com/courses/1764463/files/
 "Define a type checker for the shape language as a Haskell function."
 
 > bbox :: Shape -> BBox
+> bbox X 			= (1, 1)
+> bbox (TD s1 s2) 	= (max (fst (bbox s1)) (fst (bbox s2)), 
+> 						(snd (bbox s2)) + (snd (bbox s1)))
+> bbox (LR s1 s2) 	= ((snd (bbox s2)) + (snd (bbox s1)),
+> 						max (fst (bbox s1)) (fst (bbox s2)))
 
-> bbox X 														= BBox
-> bbox (TD s1 s2)	= | bbox s1 == Shape && bbox s2 == Shape 	= BBox
-> bbox (LR s1 s2)	= | bbox s1 == Shape && bbox s2 == Shape 	= BBox
-> bbox _														= TypeError
+> data Type = Shape | BBox | TypeError
+> 			deriving (E, Show)
+
+> bboxtc :: Shape -> Type
+> bboxtc X 													= Shape
+> bboxtc (TD s1 s2)	| bbox s1 == BBox && bbox s2 == BBox 	= BBox
+> bboxtc (LR s1 s2)	| bbox s1 == BBox && bbox s2 == BBox 	= BBox
+> bboxtc _													= TypeError
 
 +----------+
 | Part (b) |
