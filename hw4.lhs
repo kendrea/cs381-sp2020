@@ -133,14 +133,14 @@ Comment by Lyell: See https://oregonstate.instructure.com/courses/1764463/files/
 > bbox X 			= (1, 1)
 > bbox (TD s1 s2) 	= (max (fst (bbox s1)) (fst (bbox s2)), 
 > 						(snd (bbox s2)) + (snd (bbox s1)))
-> bbox (LR s1 s2) 	= ((snd (bbox s2)) + (snd (bbox s1)),
-> 						max (fst (bbox s1)) (fst (bbox s2)))
+> bbox (LR s1 s2) 	= ((fst (bbox s2)) + (fst (bbox s1)),
+> 						max (snd (bbox s1)) (snd (bbox s2)))
 
 > data Type = Shape | BBox | TypeError
 > 			deriving (Eq, Show)
 
 > bboxtc :: Shape -> Type
-> bboxtc X 														= Shape
+> bboxtc X 														= BBox
 > bboxtc (TD s1 s2)	| bboxtc s1 == BBox && bboxtc s2 == BBox 	= BBox
 > bboxtc (LR s1 s2)	| bboxtc s1 == BBox && bboxtc s2 == BBox 	= BBox
 > bboxtc _														= TypeError
