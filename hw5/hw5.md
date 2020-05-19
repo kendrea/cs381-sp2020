@@ -29,7 +29,7 @@ Illustrate the computations that take place during the evaluation of this block,
 
 **Note:** Do not use the alternative model of “temporary stack evaluation” that was briefly illustrated on slides 20 and 25 to explain the implementation given in FunStatScope.hs and FunRec.hs. Rather use one stack onto which a new activation record is pushed on each recursive function call.
 
-## Exercise 2:  Static and Dynamic Scope
+## Exercise 2: Static and Dynamic Scope
 
 Consider the following block. Assume call-by-value parameter passing.
 
