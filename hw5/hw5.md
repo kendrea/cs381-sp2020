@@ -1,6 +1,6 @@
 # Homework 5
 
-CS 381 Spring 2020
+CS 381, Spring, 2020
 Kendrea Beers, Robert Detjens, Jackson Golletz, Lyell Read, Zach Rogers
 
 ## Exercise 1: Runtime Stack
