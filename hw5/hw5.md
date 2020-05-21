@@ -8,24 +8,38 @@ Kendrea Beers, Robert Detjens, Jackson Golletz, Lyell Read, Zach Rogers
 Consider the following block. Assume static scoping and call-by-value parameter passing.
 
 ```
-{ 	int x;
-	int y;
-	y := 1;
-	{ 	int f(int x) {
-		if x=0 then {
-			y := 1 }
-		else {
-			y := f(x-1)*y+1 };
-		return y;
-	};
-	x := f(2);
-};
-}
+1	{ 	int x;
+2		int y;
+3		y := 1;
+4		{ 	int f(int x) {
+5			if x=0 then {
+6				y := 1 }
+7			else {
+8				y := f(x-1)*y+1 };
+9			return y;
+10		};
+11		x := f(2);
+12	};
+13	}
 ```
 
 Illustrate the computations that take place during the evaluation of this block, that is, draw a sequence of pictures each showing the complete runtime stack with all activation records after each statement or function call.
 
-> 
+Static, CBValue
+
+1: 	[x:?]
+2: 	[y:?, x:?]
+3: 	[y:1, x:?]
+4: 	[f{}, y:1, x:?]
+...	
+11: [f{}, y:1, x:2] 										first call of f()
+8: 	[f{}, y:1, x:1],[f{}, y:1, x:2] 						second call of f()
+8:  [f{}, y:1, x:0],[f{}, y:1, x:1],[f{}, y:1, x:2]			third call of f()
+6: 	[f{}, y:1, x:0],[f{}, y:1, x:1],[f{}, y:1, x:2]
+9: 	[ret:1, f{}, y:1, x:0],[f{}, y:1, x:1],[f{}, y:1, x:2]	ret out of f() call 3
+9: 	[ret:2, f{}, y:1, x:1],[f{}, y:1, x:2]					ret out of f() call 2
+9: 	[ret:3, f{}, y:2, x:2]									ret out of f() call 1
+12: [f{}, y:3, x:2]											NOTE: does x update?
 
 **Note:** Do not use the alternative model of “temporary stack evaluation” that was briefly illustrated on slides 20 and 25 to explain the implementation given in FunStatScope.hs and FunRec.hs. Rather use one stack onto which a new activation record is pushed on each recursive function call.
 
