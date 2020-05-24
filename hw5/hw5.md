@@ -31,15 +31,15 @@ Static, CBValue
 2: 	[y:?, x:?]
 3: 	[y:1, x:?]
 4: 	[f{}, y:1, x:?]
-...	
+...
 11: [f{}, y:1, x:2] 										first call of f()
 8: 	[f{}, y:1, x:1],[f{}, y:1, x:2] 						second call of f()
 8:  [f{}, y:1, x:0],[f{}, y:1, x:1],[f{}, y:1, x:2]			third call of f()
 6: 	[f{}, y:1, x:0],[f{}, y:1, x:1],[f{}, y:1, x:2]
 9: 	[ret:1, f{}, y:1, x:0],[f{}, y:1, x:1],[f{}, y:1, x:2]	ret out of f() call 3
-9: 	[ret:2, f{}, y:1, x:1],[f{}, y:1, x:2]					ret out of f() call 2
-9: 	[ret:3, f{}, y:2, x:2]									ret out of f() call 1
-12: [f{}, y:3, x:2]											NOTE: does x update?
+9: 	[ret:2, f{}, y:2, x:1],[f{}, y:2, x:2]					ret out of f() call 2
+9: 	[ret:8, f{}, y:8, x:2]									ret out of f() call 1
+12: [f{}, y:8, x:8]
 
 **Note:** Do not use the alternative model of “temporary stack evaluation” that was briefly illustrated on slides 20 and 25 to explain the implementation given in FunStatScope.hs and FunRec.hs. Rather use one stack onto which a new activation record is pushed on each recursive function call.
 
@@ -68,11 +68,20 @@ Consider the following block. Assume call-by-value parameter passing.
 
 (a) Which value will be assigned to z in line 12 under static scoping?
 
->
+[y:11 x:2 z:? y:13 g:{} y:11 f:{} z:? y:7 x:3]
+
+```
+z := 33
+```
+
 
 (b) Which value will be assigned to z in line 12 under dynamic scoping?
 
-> 
+[y:13 x:2 z: y:13 g:{} y:11 f:{} z:? y:7 x:3]
+
+```
+z := 26
+```
 
 **Note:** It might be instructive to draw the runtime stack for different times of the execution, but it is not strictly required.
 
@@ -102,10 +111,10 @@ What are the values of y and z at the end of the above block under the assumptio
 
 (a) Call-by-Name
 
-> 
+>
 
 (b) Call-by Need
 
-> 
+>
 
 **Note:** It might be instructive to draw the runtime stack for different times of the execution, but it is not strictly required.
