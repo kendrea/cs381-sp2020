@@ -8,18 +8,21 @@ Kendrea Beers, Robert Detjens, Jackson Golletz, Lyell Read, Zach Rogers
 Consider the following block. Assume static scoping and call-by-value parameter passing.
 
 ```
-1	{ 	int x;
+	{
+1		int x;
 2		int y;
 3		y := 1;
-4		{ 	int f(int x) {
-5			if x=0 then {
-6				y := 1 }
-7			else {
-8				y := f(x-1)*y+1 };
+		{
+4			int f(int x) {
+5				if x=0 then {
+6					y := 1
+7				} else {
+8					y := f(x-1)*y+1
+				};
 9			return y;
-10		};
+10			};
 11		x := f(2);
-12	};
+12		};
 13	}
 ```
 
@@ -56,6 +59,7 @@ Static, CBValue
 Consider the following block. Assume call-by-value parameter passing.
 
 ```
+<<<<<<< HEAD
 { 	int x;
     int y;
     int z;
@@ -71,6 +75,31 @@ Consider the following block. Assume call-by-value parameter passing.
             };
         };
     };
+=======
+{
+	int x;
+	int y;
+	int z;
+	x := 3;
+	y := 7;
+	{
+		int f(int y) {
+			return x*y
+		};
+		int y;
+		y := 11;
+		{
+			int g(int x) {
+				return f(y) 
+			};
+			{
+				int y;
+				y := 13;
+				z := g(2);
+			};
+		};
+	};
+>>>>>>> 15c3cd23a2cc5dc2f4974a58a5ec0c18a14cf305
 }
 ```
 
@@ -98,19 +127,21 @@ z := 26
 Consider the following block. Assume dynamic scoping.
 
 ```
-{ 	int y;
+{
+	int y;
 	int z;
 	y := 7;
-	{ 	int f(int a) {
-		y := a+1;
-		return (y+a)
+	{
+		int f(int a) {
+			y := a+1;
+			return (y+a)
 		};
-	int g(int x) {
-		y := f(x+1)+1;
-		z := f(x-y+3);
-		return (z+1)
-	}
-	z := g(y*2);
+		int g(int x) {
+			y := f(x+1)+1;
+			z := f(x-y+3);
+			return (z+1)
+		}
+		z := g(y*2);
 	};
 }
 ```
