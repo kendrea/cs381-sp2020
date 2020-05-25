@@ -90,19 +90,21 @@ z := 26
 Consider the following block. Assume dynamic scoping.
 
 ```
-{ 	int y;
+{
+	int y;
 	int z;
 	y := 7;
-	{ 	int f(int a) {
-		y := a+1;
-		return (y+a)
+	{
+		int f(int a) {
+			y := a+1;
+			return (y+a)
 		};
-	int g(int x) {
-		y := f(x+1)+1;
-		z := f(x-y+3);
-		return (z+1)
-	}
-	z := g(y*2);
+		int g(int x) {
+			y := f(x+1)+1;
+			z := f(x-y+3);
+			return (z+1)
+		}
+		z := g(y*2);
 	};
 }
 ```
