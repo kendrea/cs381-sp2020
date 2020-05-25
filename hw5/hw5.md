@@ -30,6 +30,7 @@ Illustrate the computations that take place during the evaluation of this block,
 
 Static, CBValue
 
+```
 1  [x:?]
 2  [y:?  x:?]
 3  [y:1  x:?]
@@ -50,6 +51,7 @@ Static, CBValue
     9 [ret:6 x:2 f:{} y:6 x:?]
    <<
 11 [f:{} y:6 x:6]
+```
 
 
 **Note:** Do not use the alternative model of “temporary stack evaluation” that was briefly illustrated on slides 20 and 25 to explain the implementation given in FunStatScope.hs and FunRec.hs. Rather use one stack onto which a new activation record is pushed on each recursive function call.
@@ -136,6 +138,7 @@ What are the values of y and z at the end of the above block under the assumptio
 
 (b) Call-by-Need
 
+```
 1  [y:?]
 2  [z:?, y:?]
 3  [z:?, y:7]
@@ -160,7 +163,6 @@ What are the values of y and z at the end of the above block under the assumptio
    <<
 14 [x:15 g:{}, f:{}, z:-30, y:-15]
 
-```
 y := -15
 z := -30
 ```
