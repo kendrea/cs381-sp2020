@@ -59,23 +59,6 @@ Static, CBValue
 Consider the following block. Assume call-by-value parameter passing.
 
 ```
-<<<<<<< HEAD
-{ 	int x;
-    int y;
-    int z;
-    x := 3;
-    y := 7;
-    {   int f(int y) { return x*y };
-        int y;
-        y := 11;
-        {   int g(int x) { return f(y) };
-            {   int y;
-                y := 13;
-                z := g(2);
-            };
-        };
-    };
-=======
 {
 	int x;
 	int y;
@@ -90,7 +73,7 @@ Consider the following block. Assume call-by-value parameter passing.
 		y := 11;
 		{
 			int g(int x) {
-				return f(y) 
+				return f(y)
 			};
 			{
 				int y;
@@ -99,7 +82,6 @@ Consider the following block. Assume call-by-value parameter passing.
 			};
 		};
 	};
->>>>>>> 15c3cd23a2cc5dc2f4974a58a5ec0c18a14cf305
 }
 ```
 
