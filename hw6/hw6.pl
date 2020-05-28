@@ -1,3 +1,6 @@
+/* Homework 6 */
+/* CS 381 Spring 2020 */
+/* Jackson Golletz, Lyell Read, Robert Detjens, and Kendrea Beers */
 
 /* Exercise 1 */
 
@@ -19,9 +22,19 @@ enroll(mary,261).
 enroll(john,381).
 enroll(jim,399).
 
+/* Note: C = course, T = time, P = place, S = student */
 
+/* (a) */
+schedule(S,P,T) :- enroll(S,C), when(C,T), where(C,P).
 
+/* (b) */
+usage(P,T) :- where(C,P), when(C,T).
+
+/* (c) */
+conflict(C1,C2) :- when(C1,T), when(C2,T), where(C1,P), where(C2,P), C1 \= C2.
+
+/* (d) */
+meet(S1,S2) :- enroll(S1,C), enroll(S2,C), S1 \= S2.
+meet(S1,S2) :- enroll(S1,C1), enroll(S2,C2), when(C1,T1), when(C2,T2), succ(T1,T2), S1 \= S2.
 
 /* Exercise 2 */
-
-
