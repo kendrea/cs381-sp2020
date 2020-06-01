@@ -35,6 +35,22 @@ conflict(C1,C2) :- when(C1,T), when(C2,T), where(C1,P), where(C2,P), C1 \= C2.
 
 /* (d) */
 meet(S1,S2) :- enroll(S1,C), enroll(S2,C), S1 \= S2;
-enroll(S1,C1), enroll(S2,C2), when(C1,T1), when(C2,T2), succ(T1,T2), S1 \= S2.
+               enroll(S1,C1), enroll(S2,C2), when(C1,T1), when(C2,T2), succ(T1,T2), S1 \= S2.
 
 /* Exercise 2 */
+
+/* (2a) */
+/* rdup(L,M) { M = L.uniq } */
+rdup([],[]).
+rdup([I|L],[I|M]) :- \+inlist(I,M), rdup(L,M).
+
+inlist(Item,[Item|Tail]).
+inlist(Item,[Head|Tail]) :- inlist(Item,Tail).
+
+/* (2b) */
+/* flat(L,F) { F = L.flatten } */
+flat([],[]).
+
+/* (2c) */
+/* project(I,L,R) { R = L[I.foreach] } */
+project([],_,[]).
