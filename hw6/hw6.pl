@@ -65,5 +65,8 @@ flat(X, R) :- append([X],[],R).
 
 /* project(I,L,R) { R = L[I.foreach] } */
 project([],_,[]).
+project([0|Is], [L|Ls], R) :- append(L,R,Rs), project(Is, Ls, Rs).
 
+subOne([],_).
+subOne([L,Ls],R) :- M is L-1, append(M,R,Rs), subOne(Ls,Rs).
 
