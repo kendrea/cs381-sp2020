@@ -1,8 +1,14 @@
-/* Homework 6 */
+
+/* +============+ */
+/* | Homework 6 | */
+/* +============+ */
+
 /* CS 381 Spring 2020 */
 /* Jackson Golletz, Lyell Read, Robert Detjens, and Kendrea Beers */
 
-/* Exercise 1 */
+/* +------------+ */
+/* | Exercise 1 | */
+/* +------------+ */
 
 when(275,10).
 when(261,12).
@@ -37,7 +43,9 @@ conflict(C1,C2) :- when(C1,T), when(C2,T), where(C1,P), where(C2,P), C1 \= C2.
 meet(S1,S2) :- enroll(S1,C), enroll(S2,C), S1 \= S2;
                enroll(S1,C1), enroll(S2,C2), when(C1,T1), when(C2,T2), succ(T1,T2), S1 \= S2.
 
-/* Exercise 2 */
+/* +------------+ */
+/* | Exercise 2 | */
+/* +------------+ */
 
 /* (2a) */
 /* rdup(L,M) { M = L.uniq } */
@@ -54,3 +62,5 @@ flat([],[]).
 /* (2c) */
 /* project(I,L,R) { R = L[I.foreach] } */
 project([],_,[]).
+
+
