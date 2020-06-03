@@ -49,9 +49,13 @@ meet(S1,S2) :- enroll(S1,C), enroll(S2,C), S1 \= S2;
 
 /* (2a) */
 /* rdup(L,M) { M = L.uniq } */
-rdup([],_).
-rdup([I|L],M) :- member(I,M), rdup(L,M).
-rdup([I|L],M) :- \+member(I,M), append(I,M,N), rdup(L,N).
+% rdup([],_).
+% rdup([I|L],M) :- member(I,M), rdup(L,M).
+% rdup([I|L],M) :- \+member(I,M), append(I,M,N), rdup(L,N).
+
+rdup([],[]).
+rdup([X|Xs], Out) :- member(X, Xs), !, rdup(Xs, Out).
+rdup([X|Xs], [X|Out]) :- rdup(Xs, Out).
 
 /* (2b) */
 /* flat(L,F) { F = L.flatten } */
