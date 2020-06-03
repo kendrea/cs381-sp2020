@@ -58,13 +58,14 @@ rdup([I|L],M) :- \+member(I,M), append(I,M,N), rdup(L,N).
 
 /* flat(L,F) { F = L.flatten } */
 flat([],_) :- !.
-flat([X|Xs], R) :- !, flat(X,Ra), flat(Xs,Rb), append(Ra,Rb,R).
-flat(X, R) :- append([X],[],R).
+flat([X|Xs],R) :- !, flat(X,Ra), flat(Xs,Rb), append(Ra,Rb,R).
+flat(X,R) :- append([X],[],R).
 
 /* (2c) */
 
 /* project(I,L,R) { R = L[I.foreach] } */
-project([],_,[]).
+project([],_,_).
+project(_,[],_).
 project([0|I], [L|Ls], R) :- append(L,R,Rs), subList(I,Is), project(Is, Ls, Rs).
 project(I,L,R) :- subList(I,Is), project(Is, L, R).
 
