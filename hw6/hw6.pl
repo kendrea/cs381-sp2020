@@ -48,26 +48,23 @@ meet(S1,S2) :- enroll(S1,C), enroll(S2,C), S1 \= S2;
 /* +------------+ */
 
 /* (2a) */
-
 /* rdup(L,M) { M = L.uniq } */
 rdup([],_).
 rdup([I|L],M) :- member(I,M), rdup(L,M).
 rdup([I|L],M) :- \+member(I,M), append(I,M,N), rdup(L,N).
 
 /* (2b) */
-
 /* flat(L,F) { F = L.flatten } */
 flat([],_) :- !.
 flat([X|Xs],R) :- !, flat(X,Ra), flat(Xs,Rb), append(Ra,Rb,R).
 flat(X,R) :- append([X],[],R).
 
 /* (2c) */
-
 /* project(I,L,R) { R = L[I.foreach] } */
 project([],_,_).
 project(_,[],_).
 project([0|I], [L|Ls], R) :- append(L,R,Rs), subList(I,Is), project(Is, Ls, Rs).
 project(I,L,R) :- subList(I,Is), project(Is, L, R).
 
-decElem(X, Y) :- Y is X-1.
 subList(Xs, Ys) :- maplist(decElem, Xs, Ys).
+decElem(X, Y) :- Y is X-1.
