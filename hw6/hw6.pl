@@ -61,10 +61,9 @@ flat(X,R) :- append([X],[],R).
 
 /* (2c) */
 /* project(I,L,R) { R = L[I.foreach] } */
-project([],_,_) :- !.
 project(_,[],_) :- !.
-project([0|I], [L|Ls], R) :- append([L],R,Rs), subOneList(I,Is), project(Is, Ls, Rs).
-project(I,[_|Ls],R) :- subOneList(I,Is), project(Is, Ls, R).
+project([1|I], [L|Ls], R) :- !, append([L],R,Rs), subOneList(I,Is), project(Is, Ls, Rs).
+project(I,[_|Ls],R) :- !, subOneList(I,Is), project(Is, Ls, R).
 
 subOneList(Xs, Ys) :- maplist(decElem, Xs, Ys).
 decElem(X, Y) :- Y is X-1.
