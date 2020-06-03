@@ -59,8 +59,8 @@ rdup([X|Xs], [X|Out]) :- rdup(Xs, Out).
 
 /* (2b) */
 /* flat(L,F) { F = L.flatten } */
-flat([],_) :- !.
-flat([X|Xs],R) :- !, flat(X,Ra), flat(Xs,Rb), append(Ra,Rb,R).
+flat([],[]).
+flat([X|Xs],R) :- flat(X,Ra), flat(Xs,Rb), !, append(Ra,Rb,R).
 flat(X,R) :- append([X],[],R).
 
 /* (2c) */
