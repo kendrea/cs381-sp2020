@@ -51,10 +51,8 @@ meet(S1,S2) :- enroll(S1,C), enroll(S2,C), S1 \= S2;
 
 /* rdup(L,M) { M = L.uniq } */
 rdup([],[]).
-rdup([I|L],[I|M]) :- \+inlist(I,M), rdup(L,M).
-
-inlist(Item,[Item|Tail]).
-inlist(Item,[Head|Tail]) :- inlist(Item,Tail).
+rdup([I|L],M) :- \+member(I,M), append(I,M,N), rdup(L,N).
+rdup([I|L],M) :- member(I,M), rdup(L,M).
 
 /* (2b) */
 
