@@ -51,13 +51,18 @@ meet(S1,S2) :- enroll(S1,C), enroll(S2,C), S1 \= S2;
 
 /* rdup(L,M) { M = L.uniq } */
 rdup([],_).
-rdup([I|L],M) :- \+member(I,M), append(I,M,N), rdup(L,N).
 rdup([I|L],M) :- member(I,M), rdup(L,M).
+rdup([I|L],M) :- \+member(I,M), append(I,M,N), rdup(L,N).
 
 /* (2b) */
 
 /* flat(L,F) { F = L.flatten } */
 flat([],[]).
+flat([X|Xs], R) :- isList(X), append(X,R,S), flat(Xs,S).
+flat([X|Xs], R) :- append([X],R,S), flat(Xs,S).
+
+isList([]).
+isList([_|Rest]) :- is_list(Rest).
 
 /* (2c) */
 
