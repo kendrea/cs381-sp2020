@@ -48,6 +48,7 @@ meet(S1,S2) :- enroll(S1,C), enroll(S2,C), S1 \= S2;
 /* +------------+ */
 
 /* (2a) */
+
 /* rdup(L,M) { M = L.uniq } */
 rdup([],[]).
 rdup([I|L],[I|M]) :- \+inlist(I,M), rdup(L,M).
@@ -56,10 +57,12 @@ inlist(Item,[Item|Tail]).
 inlist(Item,[Head|Tail]) :- inlist(Item,Tail).
 
 /* (2b) */
+
 /* flat(L,F) { F = L.flatten } */
 flat([],[]).
 
 /* (2c) */
+
 /* project(I,L,R) { R = L[I.foreach] } */
 project([],_,[]).
 
