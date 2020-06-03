@@ -50,7 +50,7 @@ meet(S1,S2) :- enroll(S1,C), enroll(S2,C), S1 \= S2;
 /* (2a) */
 
 /* rdup(L,M) { M = L.uniq } */
-rdup([],[]).
+rdup([],_).
 rdup([I|L],M) :- \+member(I,M), append(I,M,N), rdup(L,N).
 rdup([I|L],M) :- member(I,M), rdup(L,M).
 
