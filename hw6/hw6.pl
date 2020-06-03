@@ -57,12 +57,9 @@ rdup([I|L],M) :- \+member(I,M), append(I,M,N), rdup(L,N).
 /* (2b) */
 
 /* flat(L,F) { F = L.flatten } */
-flat([],[]).
-flat([X|Xs], R) :- isList(X), append(X,Xs,Y), flat(Y,R).
-flat([X|Xs], R) :- append([X],R,S), flat(Xs,S).
-
-isList([]).
-isList([_|Rest]) :- is_list(Rest).
+flat([],_) :- !.
+flat([X|Xs], R) :- !, flat(X,Ra), flat(Xs,Rb), append(Ra,Rb,R).
+flat(X, R) :- append([X],[],R).
 
 /* (2c) */
 
