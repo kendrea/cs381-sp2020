@@ -67,6 +67,6 @@ flat(X, R) :- append([X],[],R).
 project([],_,[]).
 project([0|Is], [L|Ls], R) :- append(L,R,Rs), project(Is, Ls, Rs).
 
-subOne([],_).
-subOne([L,Ls],R) :- M is L-1, append(M,R,Rs), subOne(Ls,Rs).
+subOne([],_) :- !.
+subOne([L,Ls],R) :- succ(M,L), append(M,R,Rs), subOne(Ls,Rs).
 
