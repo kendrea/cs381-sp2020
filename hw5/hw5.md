@@ -47,12 +47,15 @@ Static, CBValue
         8 [x:1 x:2 f:{} y:2 x:?]
         9 [ret:2 x:1 x:2 f:{} y:2 x:?]
       <<
-    8 [x:2 f:{} y:6 x:?]
-    9 [ret:6 x:2 f:{} y:6 x:?]
+    8 [x:2 f:{} y:5 x:?]
+    9 [ret:5 x:2 f:{} y:5 x:?]
    <<
-11 [f:{} y:6 x:6]
+11 [f:{} y:5 x:5]
+12 [y:5, x:5]
+13 []
 ```
 
+**Note**: Corrections made 6/11/2020: Arithmetic error gave us result of y:6, x:6 as opposed to correct y:5, x:5. Also extended trace to end.
 
 **Note:** Do not use the alternative model of “temporary stack evaluation” that was briefly illustrated on slides 20 and 25 to explain the implementation given in FunStatScope.hs and FunRec.hs. Rather use one stack onto which a new activation record is pushed on each recursive function call.
 
@@ -191,6 +194,33 @@ z := 54
 
 y := -15
 z := -30
+```
+
+Correct Answer (from key):
+
+```
+14  [g={}, f={}, z=?, y=7] 
+15  >>
+    10  [x=y*2, g={}, f={}, z=?, y=7] 
+    11  >>
+        4  [a=x+1, x=y*2, g={}, f={}, z=?, y=7] 
+        5  [a=15, x=14, g={}, f={}, z=?, y=16]
+             { x=14, a=15  ==>  y:=a+1=16  }
+        8  [res=31, a=15, x=14, g={}, f={}, z=?, y=16] 
+             { y=16, a=15   ==>  res=y+a=16+15=31 }
+        <<
+    11  [x=14, g={}, f={}, z=?, y=32]
+    12  >>
+        4  [a=x-y+3, x=14, g={}, f={}, z=?, y=32] 
+        5  [a=-15, x=14, g={}, f={}, z=?, y=31]
+             { x=14, a=-15  ==>  y:=a+1=-14  }
+        8  [res=-29, a=-15, x=14, g={}, f={}, z=?, y=-14] 
+             { y=-14, a=-15   ==>  res=y+a=-14+-15=-29 }
+        <<
+    12  [x=14, g={}, f={}, z=-29, y=-14]
+    13  [res=-28, x=14, g={}, f={}, z=-29, y=-14] 
+    <<
+15  [g={}, f={}, z=-28, y=-14]
 ```
 
 **Note:** It might be instructive to draw the runtime stack for different times of the execution, but it is not strictly required.
